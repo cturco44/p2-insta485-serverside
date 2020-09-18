@@ -1,6 +1,4 @@
-"""
-Insta485 development configuration.
-"""
+"""Insta485 development configuration."""
 
 import pathlib
 
