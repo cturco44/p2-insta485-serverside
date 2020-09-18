@@ -2,6 +2,8 @@
 
 # Stop on errors
 set -Eeuo pipefail
+# Prints commands
+set -x
 
 # Sanity check command line options
 usage(){

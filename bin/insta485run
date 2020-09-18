@@ -2,6 +2,8 @@
 
 # Stop on errors
 set -Eeuo pipefail
+# Prints commands
+set -x
 
 if ./bin/insta485db create ; then
     export FLASK_ENV=development

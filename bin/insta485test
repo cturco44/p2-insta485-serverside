@@ -2,6 +2,8 @@
 
 # Stop on errors
 set -Eeuo pipefail
+# Prints commands
+set -x
 
 # Tests python style
 pycodestyle insta485
