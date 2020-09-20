@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>insta485</title>
+        <link href="{{ url_for('static', filename='css/style.css') }}"" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="topnav">
+            <a href="/">Insta485</a>
+            <div class="topnav-right">
+                <a href="/explore/">Explore</a>
+                {% set profile_link = "/u/" + logname + "/" %}
+                <a href="{{profile_link}}">My Profile</a>
+            </div>
+        </div>
+        <div class="post-page-div">
+            <div class="post-page-img-wrapper">
+                {% set alt =  "post " + post[0].postid|string %}
+                {% set img_url = post[0].filename %}
+                {% set img_path = "/uploads/" + img_url %}
+                <img class="post-page-img" src="{{img_path}}" alt="{{alt}}">
+            </div>
+            <div class="post-page-right">
+                <div class="post-page-user">
+                    {% set alt = post[0].owner + " profile pic" %}
+                    {% set profile_pic_link = "/u/" + post[0].owner + "/" %}
+                    <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{owner_img_url}}" alt="{{alt}}"></a>
+                    <a href="{{profile_pic_link}}">{{post[0].owner}}</a>
+                    {% set post_link = "/p/" + post[0].postid|string + "/" %}
+                    <a href="{{post_link}}" class="post-page-timestamp">{{timestamp}}</a>
+                </div>
+                <div class="post-page-comments">
+                    {% if likes|length == 1 %}
+                    <p>{{likes|length}} like</p>
+                    {% else %}
+                    <p>{{likes|length}} likes</p>
+                    {% endif %}
+                    {% set current_url = "/p/" + post[0].postid|string + "/" %}
+                    {% for comment in comments %}
+                        {% set commenter_link = "/u/" + comment["owner"] + "/" %}
+                        <p><a href="{{commenter_link}}"><strong>{{comment["owner"]}}</strong></a> {{comment["text"]}}</p>
+                        {% if comment["owner"] == logname %}
+                        <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="commentid" value="{{comment['commentid']}}"/>
+                            <input type="submit" name="uncomment" value="delete"/>
+                        </form>
+                        {% endif %}
+                    {% endfor %}
+                    <form action="{{current_url}}" method="post">
+                        <input type="hidden" name="liker-user" value="{{logname}}"/> 
+                        <input type="hidden" name="postid" value="{{post[0].postid}}"/>
+                        <input type="submit" name="like" value="Like"/>
+                    </form>
+                    <form action="{{current_url}}" method="post">
+                        <input type="hidden" name="commenter-user" value="{{logname}}"/>
+                        <input type="text" name="comment-text"/>
+                        <input type="submit" name="comment-button" value="Comment"/>
+                    </form>
+                    {% if post[0].owner == logname %}
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post[0].postid}}"/>
+                        <input type="submit" name="delete" value="delete this post"/>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
