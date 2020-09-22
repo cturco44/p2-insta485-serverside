@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>insta485</title>
-        <link href="{{ url_for('static', filename='css/style.css') }}"" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
     </head>
 
@@ -49,15 +49,18 @@
                         </form>
                         {% endif %}
                     {% endfor %}
-                    <form action="{{current_url}}" method="post">
-                        <input type="hidden" name="liker-user" value="{{logname}}"/> 
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="postid" value="{{post[0].postid}}"/>
-                        <input type="submit" name="like" value="Like"/>
+                        <input type="submit" name="like" value="like"/>
                     </form>
-                    <form action="{{current_url}}" method="post">
-                        <input type="hidden" name="commenter-user" value="{{logname}}"/>
-                        <input type="text" name="comment-text"/>
-                        <input type="submit" name="comment-button" value="Comment"/>
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post[0].postid}}"/>
+                        <input type="submit" name="unlike" value="unlike"/>
+                    </form>
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post[0].postid}}"/>
+                        <input type="text" name="text"/>
+                        <input type="submit" name="comment" value="comment"/>
                     </form>
                     {% if post[0].owner == logname %}
                     <form action="{{current_url}}" method="post" enctype="multipart/form-data">

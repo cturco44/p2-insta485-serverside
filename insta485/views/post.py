@@ -12,9 +12,16 @@ import arrow
 
 @insta485.app.route('/p/<int:postid>/', methods=['POST', 'GET'])
 def show_post(postid):
-    """Specific post's page"""
     # Connect to database
     connection = insta485.model.get_db()
+
+    # TODO: else ?
+    if "user" in flask.session:
+        user = flask.session["user"]
+        logname = user
+    
+    # TODO: delete this once we've got the users done and shit
+    logname="placeholder"
 
     if request.method == "POST":
         # delete own comment
@@ -27,30 +34,34 @@ def show_post(postid):
             """, [deleted_commentid]
             )
 
-        # like the post
-        elif 'liker-user' in request.form:
-            liker_user = request.form['liker-user']
+        # TODO: like/dislike buttons in template
+        elif 'like' in request.form:
             liked_postid = request.form['postid']
 
             connection.execute("""
                 INSERT OR IGNORE INTO likes(owner, postid)
                 VALUES(?, ?)
-            """, [liker_user, liked_postid]
+            """, [logname, liked_postid]
+            )
+
+        elif 'unlike' in request.form:
+            unliked_postid = request.form['postid']
+
+            connection.execute("""
+                DELETE FROM likes
+                WHERE postid = ? AND owner = ?
+            """, [unliked_postid, logname]
             )
 
         # post new comment
-        elif 'commenter-user' in request.form:
-            new_comment = request.form['comment-text']
-            commenter_user = request.form['commenter-user']
+        elif 'comment' in request.form:
+            comment_text = request.form['text']
             comment_postid = request.form['postid']
-            
-            curr_comment_count = connection.execute("SELECT COUNT(*) FROM comments")
-            new_commentid = curr_comment_count + 1
 
             connection.execute(""" 
-                INSERT INTO comments(commentid, owner, postid, text)
+                INSERT INTO comments(owner, postid, text)
                 VALUES(?, ?, ?, ?)
-            """, [new_commentid, commenter_user, comment_postid, new_comment]
+            """, [logname, comment_postid, comment_text]
             )
 
         # delete own post
@@ -96,9 +107,6 @@ def show_post(postid):
     arrow_obj = arrow.get(post[0]['created'])
     timestamp = arrow_obj.humanize()
 
-    #TODO: session['username']
-    logname="placeholder"
-
     # Add database info to context
     context = {"post": post, "likes": likes, "comments": comments}
     return flask.render_template("post.html", **context, timestamp=timestamp, logname=logname) # TODO: fix logname
@@ -106,4 +114,4 @@ def show_post(postid):
 
 @insta485.app.route('/uploads/<path:post_filename>')
 def download_file(filename):
-    return send_from_directory(app.config['/var/uploads/'], post_filename, as_attachment=False)
+    return send_from_directory(app.config[UPLOAD_FOLDER], post_filename, as_attachment=False) #TODO: UPLOAD_FOLDER was '/var/uploads/'
