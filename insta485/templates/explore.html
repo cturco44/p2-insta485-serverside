@@ -20,6 +20,7 @@
         <div class="followers-div">
             <h1 class="followers-heading">Discover People</h1>
             {% for user in not_following %}
+            {% if user['username'] != logname %}
             <div class="follower-user-div">
                 {% set follower_link = "/u/" + user['username'] + "/" %}
                 {% set alt = user['username'] + " profile pic" %}
@@ -32,6 +33,7 @@
                     <input type="hidden" name="username" value="{{user['username']}}"/>
                 </form>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </body>

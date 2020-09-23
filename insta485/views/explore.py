@@ -8,15 +8,18 @@ import flask
 from flask import request, session
 import insta485
 
-@insta485.app.route('/explore/')
+@insta485.app.route('/explore/', methods=['POST', 'GET'])
 def show_explore():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: logged in username
+    # TODO: delete this once we've got the users done and shit
+    logname="michjc"
+
     if "user" in flask.session:
-        user = flask.session["user"]
-        logname = user
+        logname = flask.session["user"]
+        logname_filename = flask.session["filename"]
+
 
     if request.method == "POST":
         # follow user that logname is not following
@@ -31,13 +34,12 @@ def show_explore():
 
 
     # Query database
-    # TODO: idk if this is right
     # want to select rows in "users" of people that logname is not following
     cur = connection.execute("""
-        SELECT DISTINCT username FROM users
+        SELECT DISTINCT username, filename FROM users
         WHERE NOT EXISTS (SELECT * FROM following
-                            WHERE following.username1 = ?)
-        AND following.username2 = users.username
+                            WHERE following.username1 = ?
+                            AND following.username2 = users.username)
     """, [logname]
     )
     not_following = cur.fetchall()

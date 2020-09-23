@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>insta485</title>
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="topnav">
+            <a href="/">Insta485</a>
+            <div class="topnav-right">
+                <a href="/explore/">Explore</a>
+                {% set profile_link = "/u/" + logname + "/" %}
+                <a href="{{profile_link}}">My Profile</a>
+            </div>
+        </div>
+        <div class="edit-div">
+            {% set img_path = "/uploads/" + logname_filename %}
+            {% set alt = logname + " profile pic" %}
+            <img class="post-page-img" src="{{img_path}}" alt="{{alt}}">
+            <p>{{logname}}</p>
+            {% set current_url = "/accounts/edit/" %}
+            <div class="edit-form-div">
+                <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                    <p>Photo </p><input type="file" name="file">
+                    <p>Name </p><input type="text" name="fullname" value="{{logname_fullname}}"/>
+                    <p>Email </p><input type="text" name="email" value="{{logname_email}}"/>
+                    <input type="submit" name="update" value="submit"/>
+                </form>
+            </div>
+            <a href="/accounts/password/" class="edit-link">Change password</a>
+            <a href="/accounts/delete/" class="edit-link">Delete account</a>
+        </div>
+    </body>
+</html>

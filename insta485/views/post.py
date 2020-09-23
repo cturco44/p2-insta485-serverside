@@ -5,7 +5,7 @@ URLs include:
 /p/<postid_url_slug>/
 """
 import flask
-from flask import request, session
+from flask import request, session, send_from_directory
 import insta485
 import arrow
 
@@ -15,13 +15,13 @@ def show_post(postid):
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: else ?
+    # TODO: delete this once we've got the users done and shit. replace with empty string
+    logname="michjc"
+
     if "user" in flask.session:
-        user = flask.session["user"]
-        logname = user
-    
-    # TODO: delete this once we've got the users done and shit
-    logname="placeholder"
+        logname = flask.session["user"]
+        logname_filename = flask.session["filename"]
+
 
     if request.method == "POST":
         # delete own comment
@@ -60,7 +60,7 @@ def show_post(postid):
 
             connection.execute(""" 
                 INSERT INTO comments(owner, postid, text)
-                VALUES(?, ?, ?, ?)
+                VALUES(?, ?, ?)
             """, [logname, comment_postid, comment_text]
             )
 
@@ -74,8 +74,6 @@ def show_post(postid):
             """, [deleted_postid]
             )
 
-            # TODO: also delete comments and likes with this postid?
-
 
     # Query database
     cur = connection.execute("""
@@ -86,7 +84,6 @@ def show_post(postid):
     )
     post = cur.fetchall()
 
-    # Query database
     cur = connection.execute("""
         SELECT * 
         FROM likes
@@ -95,7 +92,6 @@ def show_post(postid):
     )
     likes = cur.fetchall()
 
-    # Query database
     cur = connection.execute("""
         SELECT * 
         FROM comments
@@ -104,14 +100,24 @@ def show_post(postid):
     )
     comments = cur.fetchall()
 
+    cur = connection.execute("""
+        SELECT filename, username FROM users
+        WHERE EXISTS (SELECT * FROM posts
+                        WHERE users.username = posts.owner
+                        AND posts.postid = ?)
+    """, [postid]
+    )
+    owner = cur.fetchall()
+
+
     arrow_obj = arrow.get(post[0]['created'])
     timestamp = arrow_obj.humanize()
 
     # Add database info to context
-    context = {"post": post, "likes": likes, "comments": comments}
+    context = {"post": post, "likes": likes, "comments": comments, "owner": owner}
     return flask.render_template("post.html", **context, timestamp=timestamp, logname=logname) # TODO: fix logname
 
 
-@insta485.app.route('/uploads/<path:post_filename>')
+@insta485.app.route('/uploads/<path:filename>')
 def download_file(filename):
-    return send_from_directory(app.config[UPLOAD_FOLDER], post_filename, as_attachment=False) #TODO: UPLOAD_FOLDER was '/var/uploads/'
+    return send_from_directory(insta485.app.config["UPLOAD_FOLDER"], filename, as_attachment=False) #TODO: UPLOAD_FOLDER was '/var/uploads/'
