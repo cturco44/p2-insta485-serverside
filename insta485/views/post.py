@@ -73,7 +73,7 @@ def show_post(postid):
                 WHERE postid = ?
             """, [deleted_postid]
             )
-
+            # TODO: delete file from /var/uploads/
 
     # Query database
     cur = connection.execute("""

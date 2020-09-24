@@ -10,6 +10,7 @@ import insta485
 import pathlib
 import uuid
 import insta485
+import os
 
 @insta485.app.route('/accounts/edit/', methods=['POST', 'GET'])
 def show_edit():
@@ -18,26 +19,39 @@ def show_edit():
 
     #TODO: initialize to blank
     logname = "michjc"
-    logname_filename = '5ecde7677b83304132cb2871516ea50032ff7a4f.jpg'
-    logname_fullname = 'Michael Cafarella'
-    logname_email = 'michjc@umich.edu'
+
+    cur = connection.execute("""
+        SELECT filename, fullname, email FROM users
+        WHERE username = ?
+    """, [logname]
+    )
+    user_obj = cur.fetchall()
+    logname_filename = user_obj[0]['filename']
+    logname_fullname = user_obj[0]['fullname']
+    logname_email = user_obj[0]['email']
 
     if "user" in flask.session:
         logname = flask.session["user"]
-        logname_filename = flask.session["filename"]
-        logname_fullname = flask.session["fullname"]
-        logname_email = flask.sesion["email"]
+        
+        cur = connection.execute("""
+            SELECT filename, fullname, email FROM users
+            WHERE username = ?
+        """, [logname]
+        )
+        user_obj = cur.fetchall()
+        logname_filename = cur.fetchall()[0]['filename']
+        logname_fullname = cur.fetchall()[0]['fullname']
+        logname_email = cur.fetchall()[0]['email']
 
     if request.method == "POST":
         if 'update' in request.form:
+            # if photo file included
             if request.files['file'].filename != "":
                 # Unpack flask object
                 fileobj = flask.request.files["file"]
                 filename = fileobj.filename
 
-                # Compute base name (filename without directory).  We use a UUID to avoid
-                # clashes with existing files, and ensure that the name is compatible with the
-                # filesystem.
+                # Compute base name (filename without directory).
                 uuid_basename = "{stem}{suffix}".format(
                     stem=uuid.uuid4().hex,
                     suffix=pathlib.Path(filename).suffix
@@ -49,23 +63,34 @@ def show_edit():
 
                 # Delete old photo
                 delete_path = insta485.app.config["UPLOAD_FOLDER"]/logname_filename
-                unlink(delete_path)
+                os.unlink(delete_path)
+
+                # Update info
+                logname_filename = uuid_basename
+                logname_fullname = request.form['fullname']
+                logname_email = request.form['email']
 
                 connection.execute("""
                     UPDATE users
-                    SET filename = ?
+                    SET filename = ?,
+                    fullname = ?,
+                    email = ?
                     WHERE username = ?
-                """, [filename, logname]
+                """, [uuid_basename, request.form['fullname'], request.form['email'], logname]
                 )
             
-            connection.execute("""
-                UPDATE users
-                SET fullname = ?,
-                email = ?
-                WHERE username = ?
-            """, [request.form['fullname'], request.form['email'], logname]
-            )
-
+            else:
+                connection.execute("""
+                    UPDATE users
+                    SET fullname = ?,
+                    email = ?
+                    WHERE username = ?
+                """, [request.form['fullname'], request.form['email'], logname]
+                )
+                
+                # Update info
+                logname_fullname = request.form['fullname']
+                logname_email = request.form['email']
 
     return flask.render_template("edit.html", logname=logname, logname_filename=logname_filename,
                                     logname_fullname=logname_fullname, logname_email=logname_email)
