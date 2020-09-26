@@ -11,7 +11,7 @@ CREATE TABLE users(
 );
 
 CREATE TABLE posts(
-  postid INT,
+  postid INTEGER,
   filename VARCHAR(64) NOT NULL,
   created DATETIME DEFAULT CURRENT_TIMESTAMP,
   owner VARCHAR(20) NOT NULL,
@@ -29,9 +29,9 @@ CREATE TABLE following( -- username1 follows username2
 );
 
 CREATE TABLE comments(
-  commentid INT,
+  commentid INTEGER,
   owner VARCHAR(20),
-  postid INT,
+  postid INTEGER,
   text VARCHAR(1024),
   created DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(commentid),
@@ -41,7 +41,7 @@ CREATE TABLE comments(
 
 CREATE TABLE likes(
   owner VARCHAR(20),
-  postid INT,
+  postid INTEGER,
   created DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(owner, postid),
   foreign key (owner) references users(username) ON UPDATE CASCADE ON DELETE CASCADE,

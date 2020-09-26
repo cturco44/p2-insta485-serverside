@@ -27,7 +27,7 @@
                 <div class="post-page-user">
                     {% set alt = post[0].owner + " profile pic" %}
                     {% set profile_pic_link = "/u/" + post[0].owner + "/" %}
-                    {% set owner_img_url =  '/uploads/' + owner[0]['filename']%}
+                    {% set owner_img_url =  '/uploads/' + owner[0]['filename'] %}
                     <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{owner_img_url}}" alt="{{alt}}"></a>
                     <a href="{{profile_pic_link}}">{{post[0].owner}}</a>
                     {% set post_link = "/p/" + post[0].postid|string + "/" %}
@@ -50,14 +50,17 @@
                         </form>
                         {% endif %}
                     {% endfor %}
+                    {% if owner_like|length == 0 %}
                     <form action="{{current_url}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="postid" value="{{post[0].postid}}"/>
                         <input type="submit" name="like" value="like"/>
                     </form>
+                    {% else %}
                     <form action="{{current_url}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="postid" value="{{post[0].postid}}"/>
                         <input type="submit" name="unlike" value="unlike"/>
                     </form>
+                    {% endif %}
                     <form action="{{current_url}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="postid" value="{{post[0].postid}}"/>
                         <input type="text" name="text"/>

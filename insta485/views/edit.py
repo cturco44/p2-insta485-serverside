@@ -4,20 +4,21 @@ Insta485 edit view.
 URLs include:
 /accounts/edit/
 """
-import flask
-from flask import request, session
-import insta485
 import pathlib
 import uuid
-import insta485
 import os
+import flask
+from flask import request, redirect
+import insta485
+
 
 @insta485.app.route('/accounts/edit/', methods=['POST', 'GET'])
 def show_edit():
+    """For /accounts/edit/ page."""
     # Connect to database
     connection = insta485.model.get_db()
 
-    #TODO: initialize to blank
+    # TODO: initialize to blank
     logname = "michjc"
 
     cur = connection.execute("""
@@ -32,7 +33,7 @@ def show_edit():
 
     if "user" in flask.session:
         logname = flask.session["user"]
-        
+
         cur = connection.execute("""
             SELECT filename, fullname, email FROM users
             WHERE username = ?
@@ -42,6 +43,8 @@ def show_edit():
         logname_filename = cur.fetchall()[0]['filename']
         logname_fullname = cur.fetchall()[0]['fullname']
         logname_email = cur.fetchall()[0]['email']
+    #else:
+        #return redirect("/accounts/login")
 
     if request.method == "POST":
         if 'update' in request.form:
@@ -62,8 +65,8 @@ def show_edit():
                 fileobj.save(path)
 
                 # Delete old photo
-                delete_path = insta485.app.config["UPLOAD_FOLDER"]/logname_filename
-                os.unlink(delete_path)
+                del_pth = insta485.app.config["UPLOAD_FOLDER"]/logname_filename
+                os.unlink(del_pth)
 
                 # Update info
                 logname_filename = uuid_basename
@@ -76,9 +79,10 @@ def show_edit():
                     fullname = ?,
                     email = ?
                     WHERE username = ?
-                """, [uuid_basename, request.form['fullname'], request.form['email'], logname]
+                """, [uuid_basename, request.form['fullname'],
+                      request.form['email'], logname]
                 )
-            
+
             else:
                 connection.execute("""
                     UPDATE users
@@ -87,11 +91,12 @@ def show_edit():
                     WHERE username = ?
                 """, [request.form['fullname'], request.form['email'], logname]
                 )
-                
+
                 # Update info
                 logname_fullname = request.form['fullname']
                 logname_email = request.form['email']
 
-    return flask.render_template("edit.html", logname=logname, logname_filename=logname_filename,
-                                    logname_fullname=logname_fullname, logname_email=logname_email)
-                                    
+    return flask.render_template("edit.html", logname=logname,
+                                 logname_filename=logname_filename,
+                                 logname_fullname=logname_fullname,
+                                 logname_email=logname_email)
