@@ -1,5 +1,4 @@
 import os
-import arrow
 import flask
 from flask import request, send_from_directory, redirect, abort
 import insta485
@@ -57,14 +56,14 @@ def check_user_url_slug_exists(user_url_slug):
 def unfollow(logged_in, following):
     connection = insta485.model.get_db()
     
-    cur = connection.execute("""
+    connection.execute("""
         DELETE FROM following
         WHERE username1 = ? AND username2 = ?
         """,[logged_in, following]
     )
 def follow(logged_in, follow):
     connection = insta485.model.get_db()
-    cur = connection.execute("""
+    connection.execute("""
         INSERT INTO following (username1, username2)
         VALUES (?, ?)
         """,[logged_in, follow]
