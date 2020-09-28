@@ -12,8 +12,8 @@ def show_following(user_url_slug):
     # Connect to database
     connection = insta485.model.get_db()
 
-    if "user" in flask.session:
-        user = flask.session["user"]
+    if "login" in flask.session:
+        user = flask.session["login"]
     #else:
     #return redirect("/accounts/login")
 

@@ -9,7 +9,7 @@ import uuid
 
 @insta485.app.route('/accounts/create/', methods=['POST', 'GET'])
 def create_account():
-    if "user" in flask.session:
+    if "login" in flask.session:
         return redirect('/accounts/edit/')
     
     if request.method == "POST":
@@ -33,7 +33,7 @@ def create_account():
         
         
         add_user(filename, fullname, username, email, hashed_password_1)
-        
+        flask.session["login"] = username
         return flask.redirect('/')
     
     return flask.render_template("create.html")
@@ -68,6 +68,6 @@ def upload_file(fileobj):
     path = insta485.app.config["UPLOAD_FOLDER"]/uuid_basename
     fileobj.save(path)
 
-    return fileobj.filename
+    return uuid_basename
 
 
