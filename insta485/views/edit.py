@@ -45,7 +45,7 @@ def show_edit():
         logname_fullname = user_obj[0]['fullname']
         logname_email = user_obj[0]['email']
     else:
-        return redirect("/accounts/login") # TODO: use url_for
+        return redirect("/accounts/login")  # TODO: use url_for
 
     if request.method == "POST":
         if 'update' in request.form:

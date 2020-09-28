@@ -8,7 +8,6 @@ import hashlib
 import uuid
 import flask
 from flask import request, abort, redirect, url_for
-from insta485.views.edit import show_edit
 import insta485
 
 
@@ -30,7 +29,6 @@ def show_password():
     user_obj = cur.fetchall()
     logname_password = user_obj[0]['password']
 
-
     if "username" in flask.session:
         logname = flask.session["username"]
 
@@ -42,7 +40,7 @@ def show_password():
         user_obj = cur.fetchall()
         logname_password = user_obj[0]['password']
     else:
-        return redirect("/accounts/login") # TODO: use url_for
+        return redirect("/accounts/login")  # TODO: use url_for
 
     if request.method == "POST":
         if 'new_password1' in request.form:
@@ -66,7 +64,7 @@ def show_password():
             """, [new_password, logname]
             )
 
-            #return redirect("/accounts/edit/")
+            # return redirect("/accounts/edit/")
             return redirect(url_for('show_edit'))
     return flask.render_template("password.html", logname=logname)
 

@@ -14,8 +14,7 @@ import insta485
 @insta485.app.route('/p/<int:postid>/', methods=['POST', 'GET'])
 def show_post(postid):
     """For /p/<postid_url_slug/ page."""
-    if not check_post_exists(postid):
-        abort(404)
+    check_post_exists(postid)
 
     # Connect to database
     connection = insta485.model.get_db()
@@ -32,8 +31,7 @@ def show_post(postid):
     if request.method == "POST":
         if 'uncomment' in request.form:
             if check_user_comment(request.form['commentid']):
-                if not check_comment_exists(request.form['commentid']):
-                    abort(404)
+                check_comment_exists(request.form['commentid'])
                 uncomment(request.form['commentid'])
             else:
                 abort(403)
@@ -49,16 +47,13 @@ def show_post(postid):
 
         elif 'delete' in request.form:
             deleted_postid = request.form['postid']
-
             if check_user_post(deleted_postid):
-                if not check_post_exists(deleted_postid):
-                    abort (404)
-
+                check_post_exists(deleted_postid)
                 delete_post(deleted_postid)
 
-                return redirect("/u/" + logname + "/") # TODO: url_for
-            else:
-                abort(403)
+                return redirect("/u/" + logname + "/")  # TODO: url_for
+
+            abort(403)
 
     # Query database
     cur = connection.execute("""
@@ -116,7 +111,7 @@ def show_post(postid):
 @insta485.app.route('/uploads/<path:filename>')
 def download_file(filename):
     """For showing images on pages."""
-    if ("username" not in flask.session):
+    if "username" not in flask.session:
         abort(403)
 
     return send_from_directory(insta485.app.config["UPLOAD_FOLDER"],
@@ -208,6 +203,7 @@ def check_user_post(postid):
 
     return post_owner == logname
 
+
 def check_user_comment(commentid):
     """Return if user is owner of comment."""
     if "username" not in flask.session:
@@ -226,26 +222,28 @@ def check_user_comment(commentid):
 
 
 def check_comment_exists(commentid):
-    """Returns whether comment exists."""
+    """Return whether comment exists."""
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT owner FROM comments
         WHERE commentid = ?
     """, [commentid]
     )
-    comment = cur.fetchall()
+    comment_obj = cur.fetchall()
 
-    return len(comment) > 0
+    if len(comment_obj) < 1:
+        abort(404)
 
 
 def check_post_exists(postid):
-    """Returns whether post exists."""
+    """Return whether post exists."""
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT owner FROM posts
         WHERE postid = ?
     """, [postid]
     )
-    post = cur.fetchall()
+    post_obj = cur.fetchall()
 
-    return len(post) > 0
+    if len(post_obj) < 1:
+        abort(404)

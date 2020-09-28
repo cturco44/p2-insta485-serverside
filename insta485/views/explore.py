@@ -5,7 +5,7 @@ URLs include:
 /explore/
 """
 import flask
-from flask import request, redirect, url_for
+from flask import request, redirect
 import insta485
 
 
@@ -49,7 +49,7 @@ def follow_user(logname, username):
     connection = insta485.model.get_db()
 
     connection.execute("""
-        INSERT INTO following(username1, username2)
+        INSERT OR IGNORE INTO following(username1, username2)
         VALUES(?, ?)
     """, [logname, username]
     )
