@@ -5,7 +5,7 @@ URLs include:
 /explore/
 """
 import flask
-from flask import request, redirect
+from flask import request, redirect, url_for
 import insta485
 
 
@@ -16,7 +16,8 @@ def show_explore():
     connection = insta485.model.get_db()
 
     # TODO: delete this once we've got the users done and shit
-    logname = "jag"
+    logname = "michjc"
+    flask.session['user'] = 'michjc'
 
     if "user" in flask.session:
         logname = flask.session["user"]

@@ -10,19 +10,17 @@
         <div class="topnav">
             <a href="/">Insta485</a>
             <div class="topnav-right">
-                <a href="/explore/">Explore</a>
+                <a href="{{url_for('show_explore')}}">Explore</a>
                 {% set profile_link = "/u/" + logname + "/" %}
                 <a href="{{profile_link}}">My Profile</a>
             </div>
         </div>
         <div class="edit-div">
-            {% set img_path = "/uploads/" + logname_filename %}
             {% set alt = logname + " profile pic" %}
-            <img class="post-page-img" src="{{img_path}}" alt="{{alt}}">
+            <img class="post-page-img" src="{{url_for('download_file', filename=logname_filename)}}" alt="{{alt}}">
             <p>{{logname}}</p>
-            {% set current_url = "/accounts/edit/" %}
             <div class="edit-form-div">
-                <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                <form action="{{url_for('show_edit')}}" method="post" enctype="multipart/form-data">
                     <p>Photo </p><input type="file" name="file">
                     <p>Name </p><input type="text" name="fullname" value="{{logname_fullname}}"/>
                     <p>Email </p><input type="text" name="email" value="{{logname_email}}"/>

@@ -8,7 +8,7 @@ import pathlib
 import uuid
 import os
 import flask
-from flask import request, redirect
+from flask import request, redirect, url_for
 import insta485
 
 
@@ -20,6 +20,7 @@ def show_edit():
 
     # TODO: initialize to blank
     logname = "michjc"
+    flask.session['user'] = 'michjc'
 
     cur = connection.execute("""
         SELECT filename, fullname, email FROM users
@@ -44,7 +45,7 @@ def show_edit():
         logname_fullname = cur.fetchall()[0]['fullname']
         logname_email = cur.fetchall()[0]['email']
     #else:
-        #return redirect("/accounts/login")
+        #return redirect("/accounts/login") # TODO: use url_for
 
     if request.method == "POST":
         if 'update' in request.form:

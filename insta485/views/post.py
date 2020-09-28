@@ -7,7 +7,7 @@ URLs include:
 import os
 import arrow
 import flask
-from flask import request, send_from_directory, redirect, abort
+from flask import request, send_from_directory, redirect, abort, url_for
 import insta485
 
 
@@ -22,6 +22,7 @@ def show_post(postid):
 
     # TODO: delete later
     logname = "awdeorio"
+    flask.session['user'] = 'awdeorio'
 
     if "user" in flask.session:
         logname = flask.session["user"]
@@ -33,7 +34,6 @@ def show_post(postid):
             if check_user_comment(request.form['commentid']):
                 if not check_comment_exists(request.form['commentid']):
                     abort(404)
-
                 uncomment(request.form['commentid'])
             else:
                 abort(403)
@@ -54,22 +54,9 @@ def show_post(postid):
                 if not check_post_exists(deleted_postid):
                     abort (404)
 
-                # find filename
-                cur = connection.execute("""
-                    SELECT filename from posts
-                    WHERE postid = ?
-                """, [deleted_postid]
-                )
-                deleted_filename = cur.fetchall()[0]['filename']
-
-                # delete from database
                 delete_post(deleted_postid)
 
-                # delete file
-                delete_path = insta485.app.config["UPLOAD_FOLDER"]/deleted_filename
-                os.unlink(delete_path)
-
-                return redirect("/u/" + logname + "/")
+                return redirect("/u/" + logname + "/") # TODO: url_for
             else:
                 abort(403)
 
@@ -129,21 +116,22 @@ def show_post(postid):
 @insta485.app.route('/uploads/<path:filename>')
 def download_file(filename):
     """For showing images on pages."""
+    """
     connection = insta485.model.get_db()
     # See if the file is an uploaded post
-    cur = connection.execute("""
+    cur = connection.execute(" #TODO: TRIPLE QUOTES
         SELECT owner FROM posts
         WHERE filename = ?
-    """, [filename]
+    ", [filename]
     )
     owner = cur.fetchall()
 
     # If not a post, check if it's a profile pic
     if len(owner) < 1:
-        cur = connection.execute("""
+        cur = connection.execute(" #TODO: TRIPLE QUOTES
             SELECT username FROM users
             WHERE filename = ?
-        """, [filename]
+        ", [filename]
         )
         owner=cur.fetchall()
 
@@ -155,9 +143,9 @@ def download_file(filename):
     else:
         user = owner[0]['owner']
 
-    if ("user" not in flask.session) or (user != flask.session['user']):
+    if ("user" not in flask.login) or (user != flask.login['user']):
         abort(403)
-    
+    """
     return send_from_directory(insta485.app.config["UPLOAD_FOLDER"],
                                filename, as_attachment=False)
 
@@ -202,7 +190,7 @@ def comment(logname, postid, comment_text):
     )
 
 
-def delete_post(postid):
+def delete_from_database(postid):
     """Delete post from database only."""
     connection = insta485.model.get_db()
     connection.execute("""
@@ -210,6 +198,25 @@ def delete_post(postid):
         WHERE postid = ?
     """, [postid]
     )
+
+
+def delete_post(postid):
+    """Delete a post's source image and from the database."""
+    # find filename
+    connection = insta485.model.get_db()
+    cur = connection.execute("""
+        SELECT filename from posts
+        WHERE postid = ?
+    """, [postid]
+    )
+    deleted_filename = cur.fetchall()[0]['filename']
+
+    # delete from database
+    delete_from_database(postid)
+
+    # delete file
+    delete_path = insta485.app.config["UPLOAD_FOLDER"]/deleted_filename
+    os.unlink(delete_path)
 
 
 def check_user_post(postid):

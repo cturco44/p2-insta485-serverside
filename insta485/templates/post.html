@@ -11,7 +11,7 @@
         <div class="topnav">
             <a href="/">Insta485</a>
             <div class="topnav-right">
-                <a href="/explore/">Explore</a>
+                <a href="{{url_for('show_explore')}}">Explore</a>
                 {% set profile_link = "/u/" + logname + "/" %}
                 <a href="{{profile_link}}">My Profile</a>
             </div>
@@ -20,18 +20,17 @@
             <div class="post-page-img-wrapper">
                 {% set alt =  "post " + post[0].postid|string %}
                 {% set img_url = post[0].filename %}
-                {% set img_path = "/uploads/" + img_url %}
-                <img class="post-page-img" src="{{img_path}}" alt="{{alt}}">
+                <img class="post-page-img" src="{{url_for('download_file', filename=img_url)}}" alt="{{alt}}">
             </div>
             <div class="post-page-right">
                 <div class="post-page-user">
                     {% set alt = post[0].owner + " profile pic" %}
                     {% set profile_pic_link = "/u/" + post[0].owner + "/" %}
                     {% set owner_img_url =  '/uploads/' + owner[0]['filename'] %}
-                    <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{owner_img_url}}" alt="{{alt}}"></a>
+                    <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{url_for('download_file', filename=owner[0]['filename'])}}" alt="{{alt}}"></a>
                     <a href="{{profile_pic_link}}">{{post[0].owner}}</a>
-                    {% set post_link = "/p/" + post[0].postid|string + "/" %}
-                    <a href="{{post_link}}" class="post-page-timestamp">{{timestamp}}</a>
+                    {% set postid_str = post[0].postid|string %}
+                    <a href="{{url_for('show_post', postid=postid_str)}}" class="post-page-timestamp">{{timestamp}}</a>
                 </div>
                 <div class="post-page-comments">
                     {% if likes|length == 1 %}
