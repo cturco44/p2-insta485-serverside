@@ -18,19 +18,21 @@ def show_edit():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: initialize to blank
+    # TODO: uncomment for testing
+    """
     logname = "awdeorio"
     flask.session['username'] = 'awdeorio'
 
-    cur = connection.execute("""
+    cur = connection.execute(" #TODO: triple quotes
         SELECT filename, fullname, email FROM users
         WHERE username = ?
-    """, [logname]
+    , [logname]
     )
     user_obj = cur.fetchall()
     logname_filename = user_obj[0]['filename']
     logname_fullname = user_obj[0]['fullname']
     logname_email = user_obj[0]['email']
+    """
 
     if "username" in flask.session:
         logname = flask.session["username"]

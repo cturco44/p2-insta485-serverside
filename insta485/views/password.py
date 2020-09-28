@@ -17,18 +17,20 @@ def show_password():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: initialize to blank and delete password processing
+    # TODO: uncomment for testing
+    """
     logname = "awdeorio"
     flask.session['username'] = 'awdeorio'
 
-    cur = connection.execute("""
+    cur = connection.execute(" # TODO: triple quotes
         SELECT password FROM users
         WHERE username = ?
-    """, [logname]
+    ", [logname]
     )
     user_obj = cur.fetchall()
     logname_password = user_obj[0]['password']
-
+    """ 
+    
     if "username" in flask.session:
         logname = flask.session["username"]
 

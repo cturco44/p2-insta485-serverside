@@ -19,14 +19,17 @@ def show_post(postid):
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: delete later
+    # TODO: uncomment for testing
+    """
     logname = "awdeorio"
     flask.session['username'] = 'awdeorio'
-
+    """
+    
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
         return redirect("/accounts/login")
+    
 
     if request.method == "POST":
         if 'uncomment' in request.form:

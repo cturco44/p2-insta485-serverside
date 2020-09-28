@@ -15,9 +15,11 @@ def show_explore():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: delete this once we've got the users done and shit
+    # TODO: uncomment for testing
+    """
     logname = "awdeorio"
     flask.session['username'] = 'awdeorio'
+    """
 
     if "username" in flask.session:
         logname = flask.session["username"]
