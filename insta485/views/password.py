@@ -19,8 +19,8 @@ def show_password():
     connection = insta485.model.get_db()
 
     # TODO: initialize to blank and delete password processing
-    logname = "michjc"
-    flask.session['username'] = 'michjc'
+    logname = "awdeorio"
+    flask.session['username'] = 'awdeorio'
 
     cur = connection.execute("""
         SELECT password FROM users

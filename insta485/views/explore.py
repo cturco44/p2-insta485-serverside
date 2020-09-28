@@ -16,8 +16,8 @@ def show_explore():
     connection = insta485.model.get_db()
 
     # TODO: delete this once we've got the users done and shit
-    logname = "michjc"
-    flask.session['username'] = 'michjc'
+    logname = "awdeorio"
+    flask.session['username'] = 'awdeorio'
 
     if "username" in flask.session:
         logname = flask.session["username"]

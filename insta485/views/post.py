@@ -116,36 +116,9 @@ def show_post(postid):
 @insta485.app.route('/uploads/<path:filename>')
 def download_file(filename):
     """For showing images on pages."""
-    """
-    connection = insta485.model.get_db()
-    # See if the file is an uploaded post
-    cur = connection.execute(" #TODO: TRIPLE QUOTES
-        SELECT owner FROM posts
-        WHERE filename = ?
-    ", [filename]
-    )
-    owner = cur.fetchall()
-
-    # If not a post, check if it's a profile pic
-    if len(owner) < 1:
-        cur = connection.execute(" #TODO: TRIPLE QUOTES
-            SELECT username FROM users
-            WHERE filename = ?
-        ", [filename]
-        )
-        owner=cur.fetchall()
-
-        # Still not found, then abort
-        if len(owner) < 1:
-            abort(403)
-        else:
-            user = owner[0]['username']
-    else:
-        user = owner[0]['owner']
-
-    if ("username" not in flask.login) or (user != flask.login['username']):
+    if ("username" not in flask.session):
         abort(403)
-    """
+
     return send_from_directory(insta485.app.config["UPLOAD_FOLDER"],
                                filename, as_attachment=False)
 

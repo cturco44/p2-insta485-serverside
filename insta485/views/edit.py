@@ -19,8 +19,8 @@ def show_edit():
     connection = insta485.model.get_db()
 
     # TODO: initialize to blank
-    logname = "michjc"
-    flask.session['username'] = 'michjc'
+    logname = "awdeorio"
+    flask.session['username'] = 'awdeorio'
 
     cur = connection.execute("""
         SELECT filename, fullname, email FROM users
@@ -41,9 +41,9 @@ def show_edit():
         """, [logname]
         )
         user_obj = cur.fetchall()
-        logname_filename = cur.fetchall()[0]['filename']
-        logname_fullname = cur.fetchall()[0]['fullname']
-        logname_email = cur.fetchall()[0]['email']
+        logname_filename = user_obj[0]['filename']
+        logname_fullname = user_obj[0]['fullname']
+        logname_email = user_obj[0]['email']
     else:
         return redirect("/accounts/login") # TODO: use url_for
 
