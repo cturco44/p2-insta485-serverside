@@ -36,6 +36,10 @@
                 {% elif item[0] == logname %}
                 {% else %}
                     not following
+                    <form action="/u/{{slug}}/following/" method="post" enctype="multipart/form-data">
+                        <input type="submit" name="follow" value="follow"/>
+                        <input type="hidden" name="username" value="{item[0]}}"/>
+                      </form>
                 {% endif %}
             </div>
 
