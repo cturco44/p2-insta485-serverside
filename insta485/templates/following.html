@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>insta485</title>
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="topnav">
+            <a href="/">Insta485</a>
+            <div class="topnav-right">
+                <a href="/explore/">Explore</a>
+                {% set profile_link = "/u/" + logname + "/" %}
+                <a href="{{profile_link}}">My Profile</a>
+            </div>
+        </div>
+        <div class = "followers-div">
+            <h1>Following</h1>
+        </div>
+        {% for item in list %}
+        <div class="follower-user-div">
+            {% set owner_img_url =  '/uploads/' + item[2] + "/" %}
+            <img class = "follower-user-img" src="{{owner_img_url}}" alt="profile picture">
+            
+            <div class="follower-user-name">
+                {% set profile_pic_link = "/u/" + item[0] + "/" %}
+                <a href = "{{profile_pic_link}}">{{item[0]}}</a>
+            </div>
+            <div class="following-indicator">
+                {% if item[1] == true %}
+                    following
+                    <form action="/u/{{slug}}/following/" method="post" enctype="multipart/form-data">
+                        <input type="submit" name="unfollow" value="unfollow"/>
+                        <input type="hidden" name="username" value="{{item[0]}}"/>
+                      </form>
+                {% elif item[0] == logname %}
+                {% else %}
+                    not following
+                {% endif %}
+            </div>
+
+        
+            
+            
+
+        
+        </div>
+        {%- endfor %}
+
+
+    </body>
+</html>
