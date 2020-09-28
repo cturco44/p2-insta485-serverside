@@ -20,7 +20,7 @@ def show_edit():
 
     # TODO: initialize to blank
     logname = "michjc"
-    flask.session['user'] = 'michjc'
+    flask.session['username'] = 'michjc'
 
     cur = connection.execute("""
         SELECT filename, fullname, email FROM users
@@ -32,8 +32,8 @@ def show_edit():
     logname_fullname = user_obj[0]['fullname']
     logname_email = user_obj[0]['email']
 
-    if "user" in flask.session:
-        logname = flask.session["user"]
+    if "username" in flask.session:
+        logname = flask.session["username"]
 
         cur = connection.execute("""
             SELECT filename, fullname, email FROM users
@@ -44,8 +44,8 @@ def show_edit():
         logname_filename = cur.fetchall()[0]['filename']
         logname_fullname = cur.fetchall()[0]['fullname']
         logname_email = cur.fetchall()[0]['email']
-    #else:
-        #return redirect("/accounts/login") # TODO: use url_for
+    else:
+        return redirect("/accounts/login") # TODO: use url_for
 
     if request.method == "POST":
         if 'update' in request.form:

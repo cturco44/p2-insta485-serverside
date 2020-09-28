@@ -17,12 +17,12 @@ def show_explore():
 
     # TODO: delete this once we've got the users done and shit
     logname = "michjc"
-    flask.session['user'] = 'michjc'
+    flask.session['username'] = 'michjc'
 
-    if "user" in flask.session:
-        logname = flask.session["user"]
-    #else:
-        #return redirect("/accounts/login")
+    if "username" in flask.session:
+        logname = flask.session["username"]
+    else:
+        return redirect("/accounts/login")
 
     if request.method == "POST":
         # follow user that logname is not following

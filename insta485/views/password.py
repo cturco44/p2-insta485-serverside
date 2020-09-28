@@ -20,7 +20,7 @@ def show_password():
 
     # TODO: initialize to blank and delete password processing
     logname = "michjc"
-    flask.session['user'] = 'michjc'
+    flask.session['username'] = 'michjc'
 
     cur = connection.execute("""
         SELECT password FROM users
@@ -31,8 +31,8 @@ def show_password():
     logname_password = user_obj[0]['password']
 
 
-    if "user" in flask.session:
-        logname = flask.session["user"]
+    if "username" in flask.session:
+        logname = flask.session["username"]
 
         cur = connection.execute("""
             SELECT password FROM users
@@ -41,8 +41,8 @@ def show_password():
         )
         user_obj = cur.fetchall()
         logname_password = user_obj[0]['password']
-    #else:
-        #return redirect("/accounts/login") # TODO: use url_for
+    else:
+        return redirect("/accounts/login") # TODO: use url_for
 
     if request.method == "POST":
         if 'new_password1' in request.form:

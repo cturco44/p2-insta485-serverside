@@ -22,12 +22,12 @@ def show_post(postid):
 
     # TODO: delete later
     logname = "awdeorio"
-    flask.session['user'] = 'awdeorio'
+    flask.session['username'] = 'awdeorio'
 
-    if "user" in flask.session:
-        logname = flask.session["user"]
-    #else:
-        #return redirect("/accounts/login")
+    if "username" in flask.session:
+        logname = flask.session["username"]
+    else:
+        return redirect("/accounts/login")
 
     if request.method == "POST":
         if 'uncomment' in request.form:
@@ -143,7 +143,7 @@ def download_file(filename):
     else:
         user = owner[0]['owner']
 
-    if ("user" not in flask.login) or (user != flask.login['user']):
+    if ("username" not in flask.login) or (user != flask.login['username']):
         abort(403)
     """
     return send_from_directory(insta485.app.config["UPLOAD_FOLDER"],
@@ -221,10 +221,10 @@ def delete_post(postid):
 
 def check_user_post(postid):
     """Return if user is owner of post."""
-    if "user" not in flask.session:
+    if "username" not in flask.session:
         return False
 
-    logname = flask.session["user"]
+    logname = flask.session["username"]
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT owner FROM posts
@@ -237,10 +237,10 @@ def check_user_post(postid):
 
 def check_user_comment(commentid):
     """Return if user is owner of comment."""
-    if "user" not in flask.session:
+    if "username" not in flask.session:
         return False
 
-    logname = flask.session["user"]
+    logname = flask.session["username"]
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT owner FROM comments

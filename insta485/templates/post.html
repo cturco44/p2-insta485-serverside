@@ -26,7 +26,6 @@
                 <div class="post-page-user">
                     {% set alt = post[0].owner + " profile pic" %}
                     {% set profile_pic_link = "/u/" + post[0].owner + "/" %}
-                    {% set owner_img_url =  '/uploads/' + owner[0]['filename'] %}
                     <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{url_for('download_file', filename=owner[0]['filename'])}}" alt="{{alt}}"></a>
                     <a href="{{profile_pic_link}}">{{post[0].owner}}</a>
                     {% set postid_str = post[0].postid|string %}
