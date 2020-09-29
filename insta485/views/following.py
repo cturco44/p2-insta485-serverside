@@ -12,13 +12,15 @@ def show_following(user_url_slug):
     # Connect to database
     connection = insta485.model.get_db()
 
-    if "login" in flask.session:
-        user = flask.session["login"]
-    #else:
-    #return redirect("/accounts/login")
+    logname = "michjc"
+    flask.session['username'] = logname
 
-    #Hardcode for testing
-    user = "awdeorio"
+    """
+    if "username" in flask.session:
+        logname = flask.session["username"]
+    else:
+        return redirect("/accounts/login")
+    """
 
     #IF Post
     if request.method == "POST":

@@ -1,8 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<body>
-  <h1>Users</h1>
-  {% for user in users %}
-  <p>{{user.username}} {{user.fullname}}</p>
-  {% endfor %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>insta485</title>
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="topnav">
+            <a href="/">Insta485</a>
+            <div class="topnav-right">
+                <a href="{{url_for('show_explore')}}">Explore</a>
+                {% set profile_link = "/u/" + logname + "/" %}
+                <a href="{{profile_link}}">My Profile</a>
+            </div>
+        </div>
+        {% for post in posts %}
+        <div class="post-page-div">
+            <div class="post-page-img-wrapper">
+                {% set alt =  "post " + post["postid"]|string %}
+                {% set img_url = post["filename"] %}
+                <img class="post-page-img" src="{{url_for('download_file', filename=img_url)}}" alt="{{alt}}">
+            </div>
+            <div class="post-page-right">
+                <div class="post-page-user">
+                    {% set alt = post["owner"] + " profile pic" %}
+                    {% set profile_pic_link = "/u/" + post["owner"] + "/" %}
+                    <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{url_for('download_file', filename=post['owner_pic'])}}" alt="{{alt}}"></a>
+                    <a href="{{profile_pic_link}}">{{post['owner']}}</a>
+                    {% set postid_str = post['postid']|string %}
+                    <a href="{{url_for('show_post', postid=postid_str)}}" class="post-page-timestamp">{{post['created']}}</a>
+                </div>
+                <div class="post-page-comments">
+                  <p>{{post['num_likes']}} likes </p>  
+                    {% set current_url = "/" %}
+                    {% for comment in post['comments'] %}
+                        {% set commenter_link = "/u/" + comment["owner"] + "/" %}
+                        <p><a href="{{commenter_link}}"><strong>{{comment["owner"]}}</strong></a> {{comment["text"]}}</p>
+                    {% endfor %}
+                    {% if post['logname_liked'] == false %}
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                        <input type="submit" name="like" value="like"/>
+                    </form>
+                    {% else %}
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                        <input type="submit" name="unlike" value="unlike"/>
+                    </form>
+                    {% endif %}
+                    <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                        <input type="text" name="text"/>
+                        <input type="submit" name="comment" value="comment"/>
+                    </form>
+                </div>
+            </div>
+            <p></p>
+          
+        </div>
+        {% endfor %}
+    </body>
 </html>

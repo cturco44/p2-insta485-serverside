@@ -9,14 +9,14 @@ import uuid
 
 @insta485.app.route('/accounts/delete/', methods=['POST', 'GET'])
 def delete_account():
-    if "login" not in flask.session:
+    if "username" not in flask.session:
         return redirect('/accounts/create/')
     else:
-        user = flask.session['login']
+        user = flask.session['username']
     if request.method == "POST":
         if 'delete' in request.form:
             delete_user(user)
-            del flask.session['login']
+            del flask.session['username']
             return redirect("/accounts/create")
     return flask.render_template("delete.html", logname=user)
     
