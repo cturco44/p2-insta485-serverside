@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+  <body>
+      <!-- DO NOT CHANGE THIS (aside from styling) -->
+      {% set current_url = "/accounts/login/" %}
+      <form action="{{current_url}}" method="post" enctype="multipart/form-data">
+        <input type="text" name="username"/>
+        <input type="password" name="password"/>
+        <input type="submit" value="login"/>
+      </form>
+      <p>
+        Don't have an account? <a href="/accounts/create">Sign up</a>
+      </p>
+  </body>
+</html>

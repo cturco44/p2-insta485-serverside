@@ -12,3 +12,5 @@ from insta485.views.explore import show_explore, follow_user
 from insta485.views.edit import show_edit
 from insta485.views.password import show_password
 from insta485.views.password import hash_password, check_password
+from insta485.views.login import login, user_exists, check_credentials
+from insta485.views.logout import logout
