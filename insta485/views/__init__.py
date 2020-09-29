@@ -14,3 +14,4 @@ from insta485.views.password import show_password
 from insta485.views.password import hash_password, check_password
 from insta485.views.login import login, user_exists, check_credentials
 from insta485.views.logout import logout
+from insta485.views.index import show_index
