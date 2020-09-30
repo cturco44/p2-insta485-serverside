@@ -1,52 +1,58 @@
+'''Deletes page'''
 import os
 import flask
-from flask import request, send_from_directory, redirect, abort, url_for
+from flask import request, redirect, url_for
 import insta485
 from insta485.config import UPLOAD_FOLDER
-import pdb
-import pathlib
-import uuid
 
 
-@insta485.app.route('/accounts/delete/', methods=['POST', 'GET'])
+@insta485.app.route("/accounts/delete/", methods=["POST", "GET"])
 def delete_account():
+    '''Deletes page'''
     if "username" not in flask.session:
-        return redirect(url_for('create_account'))
-    else:
-        user = flask.session['username']
+        return redirect(url_for("create_account"))
+    user = flask.session["username"]
     if request.method == "POST":
-        if 'delete' in request.form:
+        if "delete" in request.form:
             delete_user(user)
-            del flask.session['username']
-            return redirect(url_for('create_account'))
+            del flask.session["username"]
+            return redirect(url_for("create_account"))
     return flask.render_template("delete.html", logname=user)
 
 
 def delete_user(user):
+    '''Deletes user from database'''
     connection = insta485.model.get_db()
-    cur = connection.execute("""
+    cur = connection.execute(
+        """
         SELECT filename FROM posts
         WHERE owner = ?
-        """, [user]
+        """,
+        [user],
     )
     filenames = cur.fetchall()
     delete_images(filenames)
 
-    cur = connection.execute("""
+    cur = connection.execute(
+        """
         SELECT filename FROM users
         WHERE username = ?
-        """, [user]
+        """,
+        [user],
     )
     profile_pic = cur.fetchall()
     delete_images(profile_pic)
 
-    connection.execute("""
+    connection.execute(
+        """
         DELETE FROM users
         WHERE username = ?
-        """, [user]
+        """,
+        [user],
     )
 
 
-def delete_images(list):
-    for item in list:
-        os.remove(str(UPLOAD_FOLDER/item['filename']))
+def delete_images(list_input):
+    '''Deletes image'''
+    for item in list_input:
+        os.remove(str(UPLOAD_FOLDER / item["filename"]))
