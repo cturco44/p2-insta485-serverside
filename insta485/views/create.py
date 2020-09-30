@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import request, send_from_directory, redirect, abort
+from flask import request, send_from_directory, redirect, abort, url_for
 import insta485
 from insta485.views.password import hash_password
 import pdb
@@ -15,8 +15,7 @@ def create_account():
     flask.session['username'] = logname
     """
     if "username" in flask.session:
-        logname = flask.session["username"]
-        return redirect("/accounts/login")
+        return redirect(url_for('show_edit'))
 
     if request.method == "POST":
         if 'fullname' not in request.form:
@@ -39,9 +38,9 @@ def create_account():
 
         add_user(filename, fullname, username, email, hashed_password_1)
         flask.session['username'] = username
-        return flask.redirect('/')
+        return flask.redirect(url_for('show_index'))
 
-    return flask.render_template("create.html", logname=flask.session["username"])
+    return flask.render_template("create.html")
 
 
 def user_exists(username):

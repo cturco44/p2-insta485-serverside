@@ -22,7 +22,7 @@ def show_index():
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
-        return redirect("/accounts/login/")
+        return redirect(url_for('login'))
 
 
     if request.method == "POST":
@@ -32,7 +32,7 @@ def show_index():
             unlike_post(logname, request.form['postid'])
         elif 'comment' in request.form:
             comment(logname, request.form['postid'], request.form['text'])
-        return redirect('/')
+        return redirect(url_for('show_index'))
 
     # ALL USERS logname follows
     cur = connection.execute("""

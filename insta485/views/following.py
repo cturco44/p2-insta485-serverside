@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import request, send_from_directory, redirect, abort
+from flask import request, send_from_directory, redirect, abort, url_for
 import insta485
 import pdb
 
@@ -10,7 +10,7 @@ def show_following(user_url_slug):
     if "username" in flask.session:
         user = flask.session["username"]
     else:
-        return redirect("/accounts/login/")
+        return redirect(url_for('login'))
     if not check_user_url_slug_exists(user_url_slug):
         abort(404)
 

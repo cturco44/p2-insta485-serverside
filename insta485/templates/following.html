@@ -9,7 +9,7 @@
         <div class="topnav">
             <a href="/">Insta485</a>
             <div class="topnav-right">
-                <a href="/explore/">Explore</a>
+                <a href="{{url_for('show_explore')}}">Explore</a>
                 {% set profile_link = "/u/" + logname + "/" %}
                 <a href="{{profile_link}}">{{logname}}</a>
             </div>
@@ -29,14 +29,14 @@
             <div class="following-indicator">
                 {% if item[1] == true %}
                     following
-                    <form action="/u/{{slug}}/following/" method="post" enctype="multipart/form-data">
+                    <form action="{{url_for('show_following', user_url_slug = slug)}}" method="post" enctype="multipart/form-data">
                         <input type="submit" name="unfollow" value="unfollow"/>
                         <input type="hidden" name="username" value="{{item[0]}}"/>
                       </form>
                 {% elif item[0] == logname %}
                 {% else %}
                     not following
-                    <form action="/u/{{slug}}/following/" method="post" enctype="multipart/form-data">
+                    <form action="{{url_for('show_following', user_url_slug = slug)}}" method="post" enctype="multipart/form-data">
                         <input type="submit" name="follow" value="follow"/>
                         <input type="hidden" name="username" value="{item[0]}}"/>
                       </form>

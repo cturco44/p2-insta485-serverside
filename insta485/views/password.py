@@ -9,6 +9,7 @@ import uuid
 import flask
 from flask import request, abort, redirect, url_for
 import insta485
+import pdb
 
 
 @insta485.app.route('/accounts/password/', methods=['POST', 'GET'])

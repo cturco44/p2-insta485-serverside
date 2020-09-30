@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import request, send_from_directory, redirect, abort
+from flask import request, send_from_directory, redirect, abort, url_for
 import insta485
 from insta485.config import UPLOAD_FOLDER
 import pdb
@@ -11,14 +11,14 @@ import uuid
 @insta485.app.route('/accounts/delete/', methods=['POST', 'GET'])
 def delete_account():
     if "username" not in flask.session:
-        return redirect('/accounts/create/')
+        return redirect(url_for('create_account'))
     else:
         user = flask.session['username']
     if request.method == "POST":
         if 'delete' in request.form:
             delete_user(user)
             del flask.session['username']
-            return redirect("/accounts/create")
+            return redirect(url_for('create_account'))
     return flask.render_template("delete.html", logname=user)
 
 
