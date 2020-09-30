@@ -1,13 +1,13 @@
 """
-Insta485 password view.
+Insta485 user view.
 
 URLs include:
 /u/<user_url_slug>/
 """
 
+from flask import request, render_template, url_for, abort, redirect
 import flask
 import insta485
-from flask import request, render_template, url_for
 from insta485.views.create import upload_file
 from insta485.views.following import check_user_url_slug_exists, \
     check_login_following, unfollow, follow
@@ -19,15 +19,17 @@ def user(user_url_slug):
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
-        return flask.redirect(url_for('login'))
+        return redirect(url_for('login'))
     if not check_user_url_slug_exists(user_url_slug):
-        flask.abort(404)
+        abort(404)
 
     edit = False
     following = 2
     if request.method == 'POST':
         if 'file' in request.files:
             fileobj = request.files['file']
+            if fileobj.filename == '':
+                abort(400)
             filename = upload_file(fileobj)
             add_post(filename, user_url_slug)
 
@@ -79,8 +81,8 @@ def add_post(filename, owner):
     SELECT COUNT(*) FROM posts
     """
     )
-    post_count = int(cur.fetchall()[0]['COUNT(*)'])
-    postid = post_count + 1
+    count = int(cur.fetchall()[0]['COUNT(*)'])
+    postid = count + 1
     post_filename = filename
     post_owner = owner
     execute_query(
@@ -99,8 +101,8 @@ def post_count(owner):
     WHERE owner = ?
     """, (owner,)
     )
-    post_count = int(cur.fetchall()[0]['COUNT(*)'])
-    return post_count
+    count = int(cur.fetchall()[0]['COUNT(*)'])
+    return count
 
 
 def follower_count(owner):
@@ -146,7 +148,7 @@ def get_posts(owner):
         """
     SELECT postid, filename FROM posts
     WHERE owner = ?
-    ORDER BY postid
+    ORDER BY postid DESC
     """, (owner,)
     )
     posts = cur.fetchall()

@@ -1,12 +1,12 @@
 """
-Insta485 password view.
+Insta485 follower view.
 
 URLs include:
 /u/<user_url_slug>/followers/
 """
 import flask
-import insta485
 from flask import request, url_for, abort
+import insta485
 from insta485.views.user import execute_query
 from insta485.views.following import check_user_url_slug_exists, \
     get_profile_image, follow, unfollow, check_login_following
@@ -46,5 +46,5 @@ def get_followers(owner):
     WHERE username2 = ?
     """, (owner,)
     )
-    followers = cur.fetchall()
-    return followers
+    list_followers = cur.fetchall()
+    return list_followers

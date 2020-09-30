@@ -5,9 +5,9 @@ URLs include:
 /accounts/logout/
 """
 
+from flask import url_for
 import flask
 import insta485
-from flask import url_for
 
 
 @insta485.app.route('/accounts/logout/', methods=['POST'])

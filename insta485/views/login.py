@@ -6,8 +6,8 @@ URLs include:
 """
 
 import flask
-import insta485
 from flask import session, redirect, request, abort, url_for
+import insta485
 from insta485.views.password import hash_password, check_password
 
 

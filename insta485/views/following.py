@@ -1,14 +1,14 @@
 """Following."""
 import flask
-from flask import request, redirect, abort, url_for
+from flask import request, redirect, abort, url_for, session
 import insta485
 
 
 @insta485.app.route("/u/<user_url_slug>/following/", methods=["POST", "GET"])
 def show_following(user_url_slug):
     """Show following."""
-    if "username" in flask.session:
-        user = flask.session["username"]
+    if "username" in session:
+        user = session["username"]
     else:
         return redirect(url_for("login"))
     if not check_user_url_slug_exists(user_url_slug):
