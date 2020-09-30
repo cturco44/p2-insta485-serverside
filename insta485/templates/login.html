@@ -7,7 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <a href="{{url_for('show_index')}}">Insta485</a>
+    <div class="topnav">
+        <a href="/">Insta485</a>
+        <div class="topnav-right">
+            <a href="{{url_for('login')}}">Login</a>
+        </div>
+    </div>
     <form action="{{url_for('login')}}" method="post" enctype="multipart/form-data">
       <input type="text" name="username"/>
       <input type="password" name="password"/>

@@ -12,8 +12,7 @@
             <a href="/">Insta485</a>
             <div class="topnav-right">
                 <a href="{{url_for('show_explore')}}">Explore</a>
-                {% set profile_link = "/u/" + logname + "/" %}
-                <a href="{{profile_link}}">logname</a>
+                <a href="{{url_for('user', user_url_slug=logname)}}">{{logname}}</a>
             </div>
         </div>
         {% for post in posts %}
@@ -36,7 +35,7 @@
                     {% if post['num_likes'] == 1 %}
                     <p>1 like</p>
                     {% else %}
-                    <p>{{post['num_likes']}} likes </p> 
+                    <p>{{post['num_likes']}} likes </p>
                     {% endif %}
                     {% set current_url = "/" %}
                     {% for comment in post['comments'] %}
@@ -62,7 +61,7 @@
                 </div>
             </div>
             <p></p>
-          
+
         </div>
         {% endfor %}
     </body>

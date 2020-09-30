@@ -35,25 +35,21 @@ def show_index():
         SELECT username2 FROM following
         WHERE username1 = ?
     """,
-        [logname],
+        [logname]
     )
 
     # Generate SQL query for posts in order
     following = cur.fetchall()
     following.append({"username2": logname})
     query = "SELECT * FROM posts\nWHERE"
-    if following:
-
-        for i, item in enumerate(following):
-            if i == 0:
-                query += " owner = " + "'" + item["username2"] + "'"
-            else:
-                query += " OR owner = " + "'" + item["username2"] + "'"
-        query += "\nORDER BY postID DESC"
-        cur = connection.execute(query)
-        posts = cur.fetchall()
-    else:
-        posts = []
+    for i, item in enumerate(following):
+        if i == 0:
+            query += " owner = " + "'" + item["username2"] + "'"
+        else:
+            query += " OR owner = " + "'" + item["username2"] + "'"
+    query += "\nORDER BY postid DESC"
+    cur = connection.execute(query)
+    posts = cur.fetchall()
 
     for i in posts:
         # Humanize timestamps
