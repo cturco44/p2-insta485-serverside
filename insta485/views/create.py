@@ -14,10 +14,8 @@ def create_account():
     logname = "michjc"
     flask.session['username'] = logname
     """
-
     if "username" in flask.session:
         logname = flask.session["username"]
-    else:
         return redirect("/accounts/login")
 
     if request.method == "POST":
