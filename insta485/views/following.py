@@ -12,36 +12,18 @@ def show_following(user_url_slug):
 
     # Connect to database
     connection = insta485.model.get_db()
-<<<<<<< HEAD
-    """
-    user = "michjc"
-    flask.session['username'] = user
-    """
-
-=======
-
->>>>>>> Fix users
     if "username" in flask.session:
         user = flask.session["username"]
     else:
         return redirect("/accounts/login")
-<<<<<<< HEAD
-
-=======
->>>>>>> Fix users
 
     # IF Post
     if request.method == "POST":
         if "unfollow" in request.form:
             unfollow(user_url_slug, request.form["username"])
         elif "follow" in request.form:
-<<<<<<< HEAD
-            follow(user, request.form["username"])
-    # GET
-=======
             follow(user_url_slug, request.form["username"])
     #GET
->>>>>>> Fix users
     cur = connection.execute("""
         SELECT username2 FROM following
         WHERE username1 = ?

@@ -19,8 +19,6 @@ def show_index():
     # Connect to database
     connection = insta485.model.get_db()
 
-
-
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
@@ -45,7 +43,7 @@ def show_index():
 
     # Generate SQL query for posts in order
     following = cur.fetchall()
-
+    following.append({'username2': logname})
     query = "SELECT * FROM posts\nWHERE"
     if following:
 
