@@ -12,18 +12,24 @@ def show_following(user_url_slug):
 
     # Connect to database
     connection = insta485.model.get_db()
+
+    user = "michjc"
+    flask.session['username'] = user
+
+    """
     if "username" in flask.session:
         user = flask.session["username"]
     else:
         return redirect("/accounts/login")
+    """
 
     # IF Post
     if request.method == "POST":
         if "unfollow" in request.form:
-            unfollow(user_url_slug, request.form["username"])
+            unfollow(user, request.form["username"])
         elif "follow" in request.form:
-            follow(user_url_slug, request.form["username"])
-    #GET
+            follow(user, request.form["username"])
+    # GET
     cur = connection.execute("""
         SELECT username2 FROM following
         WHERE username1 = ?
@@ -32,11 +38,12 @@ def show_following(user_url_slug):
     test = cur.fetchall()
     list = []
     for item in test:
-        pair = (item["username2"], check_login_following(logname, item["username2"]), get_profile_image(item["username2"]))
+        pair = (item["username2"], check_login_following(
+            user, item["username2"]), get_profile_image(item["username2"]))
         list.append(pair)
     # pdb.set_trace()
     context = {"list": list}
-    return flask.render_template("following.html", **context, logname=logname, slug=user_url_slug)
+    return flask.render_template("following.html", **context, logname=user, slug=user_url_slug)
 
 
 def check_user_url_slug_exists(user_url_slug):
@@ -85,7 +92,7 @@ def get_profile_image(user):
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT filename FROM users
-        WHERE username = ?
+        WHERE username = ? 
     """, [user]
     )
     img = cur.fetchall()
