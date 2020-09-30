@@ -41,7 +41,7 @@ def create_account():
         flask.session['username'] = username
         return flask.redirect('/')
 
-    return flask.render_template("create.html")
+    return flask.render_template("create.html", logname=flask.session["username"])
 
 
 def user_exists(username):
