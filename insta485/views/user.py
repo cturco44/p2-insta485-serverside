@@ -7,17 +7,18 @@ URLs include:
 
 import flask
 import insta485
-from flask import request, render_template
+from flask import request, render_template, url_for
 from insta485.views.create import upload_file
 from insta485.views.following import check_user_url_slug_exists, check_login_following, unfollow, follow
 @insta485.app.route('/u/<user_url_slug>/', methods=['POST', 'GET'])
 def user(user_url_slug):
+    if not check_user_url_slug_exists(user_url_slug):
+        flask.abort(404)
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
-        return flask.redirect('/accounts/login/')
-    if not check_user_url_slug_exists(user_url_slug):
-        flask.abort(404)
+        return flask.redirect(url_for('login'))
+
 
     edit = False
     following = 2

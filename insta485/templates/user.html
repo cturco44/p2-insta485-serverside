@@ -15,8 +15,8 @@
     </div>
     <h1>{{user_url_slug}}</h1>
     {%if edit%}
-    <a href='/accounts/edit/'>Edit profile</a>
-    <form action="/accounts/logout/" method="post" enctype="multipart/form-data">
+    <a href=url_for('show_edit')>Edit profile</a>
+    <form action=url_for('logout') method="post" enctype="multipart/form-data">
         <input type="submit" name="logout" value="Logout"/>
     </form>
     {%endif%}
