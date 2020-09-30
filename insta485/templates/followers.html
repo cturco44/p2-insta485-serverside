@@ -22,7 +22,7 @@
       {%elif follower[1] == login_user%}
       {%else%}
       not following
-      <form action="/u/{{user_url_slug}}/follows/" method="post" enctype="multipart/form-data">
+      <form action="/u/{{user_url_slug}}/followers/" method="post" enctype="multipart/form-data">
           <input type="submit" name="follow" value="follow"/>
           <input type="hidden" name="username" value="{follower[1]}}"/>
       </form>

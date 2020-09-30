@@ -12,10 +12,10 @@
         <div class="topnav-right">
             <a href="/explore/">Explore</a>
             {% set profile_link = "/u/" + logname + "/" %}
-            <a href="{{profile_link}}">My Profile</a>
+            <a href="{{profile_link}}">{{logname}}</a>
         </div>
     </div>
-    <h1>{{username}}</h1>
+    <h1>{{user_url_slug}}</h1>
     {%if edit%}
     <a href='/accounts/edit/'>Edit profile</a>
     <form action="/accounts/logout/" method="post" enctype="multipart/form-data">
@@ -28,14 +28,14 @@
     {% set profile_link = "/u/" + user_url_slug + "/" %}
     <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
       <input type="submit" name="unfollow" value="unfollow"/>
-      <input type="hidden" name="username" value="{{username}}"/>
+      <input type="hidden" name="username" value="{{user_url_slug}}"/>
     </form>
     {%elif following == 0%}
     <p>not following</p>
     {% set profile_link = "/u/" + user_url_slug + "/" %}
     <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
       <input type="submit" name="follow" value="follow"/>
-      <input type="hidden" name="username" value="{{username}}"/>
+      <input type="hidden" name="username" value="{{user_url_slug}}"/>
     </form>
     {%else%}
     <br>
@@ -50,17 +50,17 @@
     {% endif %}
 
     {% if total_followers == 0 %}
-    <a href="/u/{{username}}/followers/">0 followers</a>
+    <a href="/u/{{user_url_slug}}/followers/">0 followers</a>
     {% elif total_followers == 1 %}
-    <a href="/u/{{username}}/followers/">1 follower</a>
+    <a href="/u/{{user_url_slug}}/followers/">1 follower</a>
     {% else %}
-    <a href="/u/{{username}}/followers/">{{total_followers}} followers</a>
+    <a href="/u/{{user_url_slug}}/followers/">{{total_followers}} followers</a>
     {% endif %}
 
-    <a href="/u/{{username}}/following/">{{total_following}} following</a>
+    <a href="/u/{{user_url_slug}}/following/">{{total_following}} following</a>
 
     {{fullname}}
-
+    <br>
     {% for post in posts %}
       <a href="/p/{{post['postid']}}/">
         <img src="/uploads/{{post['filename']}}/"  style="width:100px;height:100px;border:0;">

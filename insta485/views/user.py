@@ -15,30 +15,33 @@ from insta485.views.create import upload_file
 from insta485.views.following import check_user_url_slug_exists, check_login_following, unfollow, follow
 @insta485.app.route('/u/<user_url_slug>/', methods=['POST', 'GET'])
 def user(user_url_slug):
-    if not check_user_url_slug_exists(user_url_slug):
-        flask.abort(404)
+
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
         return flask.redirect('/accounts/login/')
+
+    if not check_user_url_slug_exists(user_url_slug):
+        flask.abort(404)
     edit = False
     following = 2
     if request.method == 'POST':
-        if user_url_slug == flask.session.get('username'):#user's own page
-            edit = True
-            if 'file' in request.files:
-                fileobj = request.files['file']
-                filename = upload_file(fileobj)
-                add_post(filename, user_url_slug)
-        else:#other's page
-            if check_login_following(flask.session['username'], user_url_slug):
-                following = 1
-                if 'unfollow' in request.form:
-                    unfollow(flask.session['username'], user_url_slug)
-            else:
-                following = 0
-                if 'follow' in request.form:
-                    follow(flask.session['username'], user_url_slug)
+        if 'file' in request.files:
+            fileobj = request.files['file']
+            filename = upload_file(fileobj)
+            add_post(filename, user_url_slug)
+
+        if 'unfollow' in request.form:
+            unfollow(flask.session['username'], user_url_slug)
+        elif 'follow' in request.form:
+            follow(flask.session['username'], user_url_slug)
+    if user_url_slug == flask.session.get('username'):#user's own page
+        edit = True
+    else:#other's page
+        if check_login_following(flask.session['username'], user_url_slug):
+            following = 1
+        else:
+            following = 0
     total_posts = post_count(user_url_slug)
     total_followers = follower_count(user_url_slug)
     total_following = following_count(user_url_slug)
@@ -48,12 +51,8 @@ def user(user_url_slug):
     return render_template('user.html', edit=edit, following=following,
     total_posts=total_posts, total_followers=total_followers,
     total_following=total_following,
-    fullanme=fullname, posts=posts, logname=logname,username=user_url_slug)
-'''
-@insta485.app.route('/uploads/<filename>/')
-def get_pic(filename):
-    return flask.send_from_directory('/uploads/<filename>/')
-'''
+    fullname=fullname, posts=posts, logname=logname,user_url_slug=user_url_slug)
+
 def execute_query(query, parameters=None):
     connection = insta485.model.get_db()
     if not parameters:
@@ -68,7 +67,7 @@ def add_post(filename, owner):
     """
     )
     post_count = int(cur.fetchall()[0]['COUNT(*)'])
-    post_id = postcount + 1
+    postid = post_count + 1
     post_filename = filename
     post_owner = owner
     execute_query(

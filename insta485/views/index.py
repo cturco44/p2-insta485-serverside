@@ -18,10 +18,8 @@ def show_index():
     """Display / route."""
     # Connect to database
     connection = insta485.model.get_db()
-    """
-    logname = "michjc"
-    flask.session['username'] = logname
-    """
+
+
 
     if "username" in flask.session:
         logname = flask.session["username"]
