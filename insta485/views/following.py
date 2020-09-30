@@ -7,18 +7,15 @@ import pdb
 
 @insta485.app.route('/u/<user_url_slug>/following/', methods=['POST', 'GET'])
 def show_following(user_url_slug):
+    if "username" in flask.session:
+        logname = flask.session["username"]
+    else:
+        return redirect("/accounts/login/")
     if not check_user_url_slug_exists(user_url_slug):
         abort(404)
 
     # Connect to database
     connection = insta485.model.get_db()
-
-
-    if "username" in flask.session:
-        logname = flask.session["username"]
-    else:
-        return redirect("/accounts/login/")
-
 
     # IF Post
     if request.method == "POST":
