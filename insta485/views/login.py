@@ -8,7 +8,7 @@ URLs include:
 import flask
 import insta485
 from flask import session, redirect,request, abort
-from insta485.views.password import hash_password
+from insta485.views.password import hash_password, check_password
 
 @insta485.app.route('/accounts/login/', methods=['POST', 'GET'])
 def login():
@@ -19,7 +19,8 @@ def login():
         password = request.form.get('password')
         if not user_exists(username):
             abort(403)
-        if not check_credentials(username, password):
+        #if not check_credentials(username, password):
+        if not check_credentials_pass(username, password):
             abort(403)
         session['username'] = username
         return redirect('/')
@@ -49,3 +50,16 @@ def check_credentials(username, password):
     )
     check = cur.fetchall()
     return check != None
+
+
+def check_credentials_pass(username, input_pass):
+    """Verify the login information."""
+    connection = insta485.model.get_db()
+    cur = connection.execute("""
+        SELECT password FROM users
+        WHERE username = ?
+    """, [username]
+    )
+    db_password = cur.fetchall()[0]['password']
+
+    return check_password(db_password, input_pass)

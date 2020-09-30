@@ -13,13 +13,14 @@ import insta485
 
 @insta485.app.route('/p/<int:postid>/', methods=['POST', 'GET'])
 def show_post(postid):
+    """For /p/<postid_url_slug/ page."""
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
         return redirect("/accounts/login/")
 
-    """For /p/<postid_url_slug/ page."""
     check_post_exists(postid)
+    
     # Connect to database
     connection = insta485.model.get_db()
 
