@@ -9,6 +9,7 @@ import uuid
 import sqlite3
 from urllib.parse import urlparse
 import utils
+import pdb
 
 
 def test_accounts_create(client):

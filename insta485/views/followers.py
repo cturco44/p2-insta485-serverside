@@ -6,17 +6,17 @@ URLs include:
 """
 import flask
 import insta485
-from flask import request, url_for
+from flask import request, url_for, abort
 from insta485.views.user import execute_query
 from insta485.views.following import check_user_url_slug_exists, get_profile_image, follow, unfollow, check_login_following
 @insta485.app.route('/u/<user_url_slug>/followers/', methods=['POST', 'GET'])
 def followers(user_url_slug):
-    if not check_user_url_slug_exists(user_url_slug):
-        abort(404)
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
         return flask.redirect(url_for('login'))
+    if not check_user_url_slug_exists(user_url_slug):
+        abort(404)
     if request.method == "POST":
         if "unfollow" in request.form:
             unfollow(logname, request.form["username"])
