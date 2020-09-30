@@ -7,13 +7,13 @@ URLs include:
 
 import flask
 import insta485
-from flask import session, redirect,request, abort
+from flask import session, redirect,request, abort, url_for
 from insta485.views.password import hash_password, check_password
 
 @insta485.app.route('/accounts/login/', methods=['POST', 'GET'])
 def login():
     if 'username' in session:
-        return redirect('/')
+        return redirect(url_for('show_index'))
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -23,7 +23,7 @@ def login():
         if not check_credentials_pass(username, password):
             abort(403)
         session['username'] = username
-        return redirect('/')
+        return redirect(url_for('show_index'))
     return flask.render_template("login.html")
 
 

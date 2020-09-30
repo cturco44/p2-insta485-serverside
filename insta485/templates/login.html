@@ -7,14 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <a href="/">Insta485</a>
-    <form action="/accounts/login/" method="post" enctype="multipart/form-data">
+    <a href="{{url_for('show_index')}}">Insta485</a>
+    <form action="{{url_for('show_index')}}" method="post" enctype="multipart/form-data">
       <input type="text" name="username"/>
       <input type="password" name="password"/>
       <input type="submit" value="login"/>
     </form>
     <p>
-      Don't have an account? <a href="/accounts/create/">Sign up</a>
+      Don't have an account? <a href="{{url_for('create_account')}}">Sign up</a>
     </p>
   </body>
 </html>
