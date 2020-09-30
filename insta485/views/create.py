@@ -20,7 +20,6 @@ def create_account():
     else:
         return redirect("/accounts/login")
 
-
     if request.method == "POST":
         if 'fullname' not in request.form:
             abort(400)
