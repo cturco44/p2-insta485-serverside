@@ -18,7 +18,7 @@ def show_following(user_url_slug):
 
     """
     if "username" in flask.session:
-        user = flask.session["username"]
+        logname = flask.session["username"]
     else:
         return redirect("/accounts/login")
     """

@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Insta485</title>
+      <meta charset="utf-8">
+      <title>insta485</title>
+      <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+      <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <h1>Followers</h1>
+    <div class="topnav">
+        <a href="/">Insta485</a>
+        <div class="topnav-right">
+            <a href="{{url_for('show_explore')}}">Explore</a>
+            {% set profile_link = "/u/" + logname + "/" %}
+            <a href="{{profile_link}}">My Profile</a>
+        </div>
+    </div>
+    <div class = "followers-div">
+      <h1>Followers</h1>
+    </div>
     {% for follower in all_followers%}
+    <div class="follower-user-div">
       {%set follower_img_url = '/uploads/' + follower[0] + '/'%}
       <img class = "follower-user-img" src="{{follower_img_url}}" alt="profile picture">
 
-      {% set profile_link = '/u/' + follower[1] + '/'%}
-      <a href = "{{profile_link}}">{{follower[1]}}</a>
-
-      {%if follower[2]%}
-      following
-      <form action="/u/{{user_url_slug}}/followers/" method="post" enctype="multipart/form-data">
-          <input type="submit" name="unfollow" value="unfollow"/>
-          <input type="hidden" name="username" value="{{follower[1]}}"/>
-      </form>
-      {%elif follower[1] == login_user%}
-      {%else%}
-      not following
-      <form action="/u/{{user_url_slug}}/followers/" method="post" enctype="multipart/form-data">
-          <input type="submit" name="follow" value="follow"/>
-          <input type="hidden" name="username" value="{follower[1]}}"/>
-      </form>
-      {%endif%}
+      <div class="follower-user-name">
+        {% set profile_link = '/u/' + follower[1] + '/'%}
+        <a href = "{{profile_link}}">{{follower[1]}}</a>
+      </div>
+      <div class="following-indicator">
+        {%if follower[2]%}
+        following
+        <form action="/u/{{user_url_slug}}/followers/" method="post" enctype="multipart/form-data">
+            <input type="submit" name="unfollow" value="unfollow"/>
+            <input type="hidden" name="username" value="{{follower[1]}}"/>
+        </form>
+        {%elif follower[1] == login_user%}
+        {%else%}
+        not following
+        <form action="/u/{{user_url_slug}}/followers/" method="post" enctype="multipart/form-data">
+            <input type="submit" name="follow" value="follow"/>
+            <input type="hidden" name="username" value="{{follower[1]}}"/>
+        </form>
+        {%endif%}
+      </div>
+    </div>
     {%endfor%}
   </body>
 </html>

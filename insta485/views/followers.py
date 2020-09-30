@@ -5,7 +5,6 @@ URLs include:
 /u/<user_url_slug>/followers/
 """
 import flask
-from flask import request
 import insta485
 from flask import request
 from insta485.views.user import execute_query
@@ -15,23 +14,24 @@ def followers(user_url_slug):
     if not check_user_url_slug_exists(user_url_slug):
         abort(404)
     if 'username' in flask.session:
-        login_user = flask.session['username']
+        logname = flask.session['username']
     else:
         return flask.redirect('/accounts/login/')
     if request.method == "POST":
         if "unfollow" in request.form:
-            unfollow(login_user, request.form["username"])
+            unfollow(logname, request.form["username"])
         elif "follow" in request.form:
-            follow(login_user, request.form["username"])
+            follow(logname, request.form["username"])
     follower_names = get_followers(user_url_slug)
     all_followers = []
     for follower in follower_names:
         icon_filename =  get_profile_image(follower['username1'])
         follower_name = follower['username1']
-        login_following = check_login_following(login_user, follower_name)
+        login_following = check_login_following(logname, follower_name)
+        print((icon_filename, follower_name, login_following))
         all_followers.append((icon_filename, follower_name, login_following))
     return flask.render_template('followers.html', all_followers=all_followers,
-    login_user=login_user, user_url_slug=user_url_slug)
+    logname=logname, user_url_slug=user_url_slug)
 
 
 
