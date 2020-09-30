@@ -7,6 +7,7 @@ import pdb
 import pathlib
 import uuid
 
+
 @insta485.app.route('/accounts/create/', methods=['POST', 'GET'])
 def create_account():
     logname = "michjc"
@@ -18,7 +19,7 @@ def create_account():
     else:
         return redirect("/accounts/login")
     """
-    
+
     if request.method == "POST":
         if 'fullname' not in request.form:
             abort(400)
@@ -37,14 +38,14 @@ def create_account():
         if unhashed_password == "":
             abort(400)
         hashed_password_1 = hash_password(unhashed_password)
-        
-        
+
         add_user(filename, fullname, username, email, hashed_password_1)
-        flask.session["login"] = username
+        flask.session['username'] = username
         return flask.redirect('/')
-    
+
     return flask.render_template("create.html")
-        
+
+
 def user_exists(username):
     connection = insta485.model.get_db()
     cur = connection.execute("""
@@ -54,6 +55,7 @@ def user_exists(username):
     )
     num_as_string = cur.fetchall()
     return int(num_as_string[0]['COUNT(*)']) == 1
+
 
 def add_user(filename, fullname, username, email, hashed_password):
     connection = insta485.model.get_db()
@@ -67,8 +69,8 @@ def add_user(filename, fullname, username, email, hashed_password):
 def upload_file(fileobj):
     filename = fileobj.filename
     uuid_basename = "{stem}{suffix}".format(
-    stem=uuid.uuid4().hex,
-    suffix=pathlib.Path(filename).suffix
+        stem=uuid.uuid4().hex,
+        suffix=pathlib.Path(filename).suffix
     )
 
     # Save to disk
@@ -76,5 +78,3 @@ def upload_file(fileobj):
     fileobj.save(path)
 
     return uuid_basename
-
-

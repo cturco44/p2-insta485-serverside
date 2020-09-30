@@ -7,6 +7,7 @@ import pdb
 import pathlib
 import uuid
 
+
 @insta485.app.route('/accounts/delete/', methods=['POST', 'GET'])
 def delete_account():
     if "username" not in flask.session:
@@ -19,13 +20,14 @@ def delete_account():
             del flask.session['username']
             return redirect("/accounts/create")
     return flask.render_template("delete.html", logname=user)
-    
+
+
 def delete_user(user):
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT filename FROM posts
         WHERE owner = ?
-        """,[user]
+        """, [user]
     )
     filenames = cur.fetchall()
     delete_images(filenames)
@@ -33,7 +35,7 @@ def delete_user(user):
     cur = connection.execute("""
         SELECT filename FROM users
         WHERE username = ?
-        """,[user]
+        """, [user]
     )
     profile_pic = cur.fetchall()
     delete_images(profile_pic)
@@ -41,11 +43,10 @@ def delete_user(user):
     connection.execute("""
         DELETE FROM users
         WHERE username = ?
-        """,[user]
+        """, [user]
     )
+
+
 def delete_images(list):
     for item in list:
         os.remove(str(UPLOAD_FOLDER/item['filename']))
-
-
-    
