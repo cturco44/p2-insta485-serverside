@@ -14,6 +14,7 @@ from insta485.views.following import check_user_url_slug_exists, \
 
 @insta485.app.route('/u/<user_url_slug>/followers/', methods=['POST', 'GET'])
 def followers(user_url_slug):
+    """Followers flask function."""
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
@@ -38,6 +39,7 @@ def followers(user_url_slug):
 
 
 def get_followers(owner):
+    """Get followers from sql."""
     cur = execute_query(
         """
     SELECT username1 FROM following

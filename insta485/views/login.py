@@ -13,6 +13,7 @@ from insta485.views.password import hash_password, check_password
 
 @insta485.app.route('/accounts/login/', methods=['POST', 'GET'])
 def login():
+    """Login flask function."""
     if 'username' in session:
         return redirect(url_for('show_index'))
     if request.method == 'POST':
@@ -29,6 +30,7 @@ def login():
 
 
 def user_exists(username):
+    """Check user exists."""
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT COUNT(*) FROM users
@@ -40,6 +42,7 @@ def user_exists(username):
 
 
 def check_credentials(username, password):
+    """Check credentials."""
     connection = insta485.model.get_db()
     hashed_password = hash_password(password)
     cur = connection.execute(

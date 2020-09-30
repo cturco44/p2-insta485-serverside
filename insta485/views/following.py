@@ -1,4 +1,4 @@
-'''following'''
+"""Following."""
 import flask
 from flask import request, redirect, abort, url_for
 import insta485
@@ -6,7 +6,7 @@ import insta485
 
 @insta485.app.route("/u/<user_url_slug>/following/", methods=["POST", "GET"])
 def show_following(user_url_slug):
-    '''show following'''
+    """Show following."""
     if "username" in flask.session:
         user = flask.session["username"]
     else:
@@ -47,7 +47,7 @@ def show_following(user_url_slug):
 
 
 def check_user_url_slug_exists(user_url_slug):
-    '''check exist'''
+    """Check exist."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -62,7 +62,7 @@ def check_user_url_slug_exists(user_url_slug):
 
 
 def unfollow(logged_in, following):
-    '''unfollow'''
+    """Unfollow."""
     connection = insta485.model.get_db()
 
     connection.execute(
@@ -75,7 +75,7 @@ def unfollow(logged_in, following):
 
 
 def follow(logged_in, follows):
-    '''check follow'''
+    """Check follow."""
     connection = insta485.model.get_db()
     connection.execute(
         """
@@ -87,7 +87,7 @@ def follow(logged_in, follows):
 
 
 def check_login_following(logname, user):
-    '''check logged in following'''
+    """Check logged in following."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -101,7 +101,7 @@ def check_login_following(logname, user):
 
 
 def get_profile_image(user):
-    '''get profile image filename'''
+    """Get profile image filename."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """

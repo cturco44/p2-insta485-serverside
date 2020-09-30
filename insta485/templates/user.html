@@ -59,7 +59,7 @@
     <br>
     {% for post in posts %}
       <a href="{{url_for('show_post', postid=post['postid'])}}">
-        <img src="{{url_for('download_file', filename=post['filename'])}}"  style="width:100px;height:100px;border:0;">
+        <img src="{{url_for('download_file', filename=post['filename'])}}"  style="width:100px;height:100px;border:0;" alt="file">
       </a>
     {% endfor %}
 

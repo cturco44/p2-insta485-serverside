@@ -15,6 +15,7 @@ from insta485.views.following import check_user_url_slug_exists, \
 
 @insta485.app.route('/u/<user_url_slug>/', methods=['POST', 'GET'])
 def user(user_url_slug):
+    """User func."""
     if 'username' in flask.session:
         logname = flask.session['username']
     else:
@@ -62,6 +63,7 @@ def user(user_url_slug):
 
 
 def execute_query(query, parameters=None):
+    """Execute query."""
     connection = insta485.model.get_db()
     if not parameters:
         cur = connection.execute(query)
@@ -71,6 +73,7 @@ def execute_query(query, parameters=None):
 
 
 def add_post(filename, owner):
+    """Add post."""
     cur = execute_query(
         """
     SELECT COUNT(*) FROM posts
@@ -89,6 +92,7 @@ def add_post(filename, owner):
 
 
 def post_count(owner):
+    """Post count."""
     cur = execute_query(
         """
     SELECT COUNT(*) FROM posts
@@ -100,6 +104,7 @@ def post_count(owner):
 
 
 def follower_count(owner):
+    """Follower count."""
     cur = execute_query(
         """
     SELECT COUNT(*)FROM following
@@ -112,6 +117,7 @@ def follower_count(owner):
 
 
 def following_count(owner):
+    """Following count."""
     cur = execute_query(
         """
     SELECT COUNT(*) FROM following
@@ -123,6 +129,7 @@ def following_count(owner):
 
 
 def get_fullname(owner):
+    """Get fullname."""
     cur = execute_query(
         """
     SELECT fullname FROM users
@@ -134,6 +141,7 @@ def get_fullname(owner):
 
 
 def get_posts(owner):
+    """Get Posts."""
     cur = execute_query(
         """
     SELECT postid, filename FROM posts

@@ -77,7 +77,7 @@ def show_index():
 
 
 def list_comments(post_id):
-    '''list comments'''
+    """List comments."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -96,7 +96,7 @@ def list_comments(post_id):
 
 
 def num_likes(post_id):
-    '''get num likes from db'''
+    """Get num likes from db."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -110,7 +110,7 @@ def num_likes(post_id):
 
 
 def logname_liked(post_id, logname):
-    '''see if logname liked'''
+    """See if logname liked."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -124,7 +124,7 @@ def logname_liked(post_id, logname):
 
 
 def owner_profile_pic(owner):
-    '''filename profile pic getter'''
+    """Filename profile pic getter."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """

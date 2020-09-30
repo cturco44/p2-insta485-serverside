@@ -1,4 +1,4 @@
-'''create'''
+"""Create."""
 import uuid
 import pathlib
 import flask
@@ -9,7 +9,7 @@ from insta485.views.password import hash_password
 
 @insta485.app.route("/accounts/create/", methods=["POST", "GET"])
 def create_account():
-    '''create account'''
+    """Create account."""
     if "username" in flask.session:
         return redirect(url_for("show_edit"))
 
@@ -40,7 +40,7 @@ def create_account():
 
 
 def user_exists(username):
-    '''check user exist'''
+    """Check user exist."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -54,7 +54,7 @@ def user_exists(username):
 
 
 def add_user(filename, fullname, username, email, hashed_password):
-    '''check add user'''
+    """Check add user."""
     connection = insta485.model.get_db()
     connection.execute(
         """
@@ -66,7 +66,7 @@ def add_user(filename, fullname, username, email, hashed_password):
 
 
 def upload_file(fileobj):
-    '''upload file'''
+    """Upload file."""
     filename = fileobj.filename
     uuid_basename = "{stem}{suffix}".format(
         stem=uuid.uuid4().hex, suffix=pathlib.Path(filename).suffix

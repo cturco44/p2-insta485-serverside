@@ -1,4 +1,4 @@
-'''Deletes page'''
+"""Deletes page."""
 import os
 import flask
 from flask import request, redirect, url_for
@@ -8,7 +8,7 @@ from insta485.config import UPLOAD_FOLDER
 
 @insta485.app.route("/accounts/delete/", methods=["POST", "GET"])
 def delete_account():
-    '''Deletes page'''
+    """Delete page."""
     if "username" not in flask.session:
         return redirect(url_for("create_account"))
     user = flask.session["username"]
@@ -21,7 +21,7 @@ def delete_account():
 
 
 def delete_user(user):
-    '''Deletes user from database'''
+    """Delete user from database."""
     connection = insta485.model.get_db()
     cur = connection.execute(
         """
@@ -53,6 +53,6 @@ def delete_user(user):
 
 
 def delete_images(list_input):
-    '''Deletes image'''
+    """Delete image."""
     for item in list_input:
         os.remove(str(UPLOAD_FOLDER / item["filename"]))
