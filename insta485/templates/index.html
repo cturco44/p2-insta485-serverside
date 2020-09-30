@@ -13,7 +13,7 @@
             <div class="topnav-right">
                 <a href="{{url_for('show_explore')}}">Explore</a>
                 {% set profile_link = "/u/" + logname + "/" %}
-                <a href="{{profile_link}}">My Profile</a>
+                <a href="{{profile_link}}">logname</a>
             </div>
         </div>
         {% for post in posts %}
@@ -33,7 +33,11 @@
                     <a href="{{url_for('show_post', postid=postid_str)}}" class="post-page-timestamp">{{post['created']}}</a>
                 </div>
                 <div class="post-page-comments">
-                  <p>{{post['num_likes']}} likes </p>  
+                    {% if post['num_likes'] == 1 %}
+                    <p>1 like</p>
+                    {% else %}
+                    <p>{{post['num_likes']}} likes </p> 
+                    {% endif %}
                     {% set current_url = "/" %}
                     {% for comment in post['comments'] %}
                         {% set commenter_link = "/u/" + comment["owner"] + "/" %}
