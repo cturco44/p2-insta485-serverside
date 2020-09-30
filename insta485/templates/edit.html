@@ -11,8 +11,7 @@
             <a href="/">Insta485</a>
             <div class="topnav-right">
                 <a href="{{url_for('show_explore')}}">Explore</a>
-                {% set profile_link = "/u/" + logname + "/" %}
-                <a href="{{profile_link}}">{{logname}}</a>
+                <a href="{{url_for('user', user_url_slug=logname)}}">{{logname}}</a>
             </div>
         </div>
         <div class="edit-div">
@@ -27,8 +26,8 @@
                     <input type="submit" name="update" value="submit"/>
                 </form>
             </div>
-            <a href="/accounts/password/" class="edit-link">Change password</a>
-            <a href="/accounts/delete/" class="edit-link">Delete account</a>
+            <a href="{{url_for('show_password')}}" class="edit-link">Change password</a>
+            <a href="{{url_for('delete_account')}}" class="edit-link">Delete account</a>
         </div>
     </body>
 </html>

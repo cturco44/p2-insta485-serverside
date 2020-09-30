@@ -9,7 +9,6 @@ import uuid
 import flask
 from flask import request, abort, redirect, url_for
 import insta485
-import pdb
 
 
 @insta485.app.route('/accounts/password/', methods=['POST', 'GET'])
@@ -17,20 +16,6 @@ def show_password():
     """For /accounts/password/ page."""
     # Connect to database
     connection = insta485.model.get_db()
-
-    # TODO: uncomment for testing
-    """
-    logname = "awdeorio"
-    flask.session['username'] = 'awdeorio'
-
-    cur = connection.execute(" # TODO: triple quotes
-        SELECT password FROM users
-        WHERE username = ?
-    ", [logname]
-    )
-    user_obj = cur.fetchall()
-    logname_password = user_obj[0]['password']
-    """
 
     if "username" in flask.session:
         logname = flask.session["username"]
@@ -43,7 +28,7 @@ def show_password():
         user_obj = cur.fetchall()
         logname_password = user_obj[0]['password']
     else:
-        return redirect("/accounts/login")  # TODO: use url_for
+        return redirect(url_for('login'))
 
     if request.method == "POST":
         if 'new_password1' in request.form:
@@ -67,7 +52,6 @@ def show_password():
             """, [new_password, logname]
             )
 
-            # return redirect("/accounts/edit/")
             return redirect(url_for('show_edit'))
     return flask.render_template("password.html", logname=logname)
 

@@ -5,7 +5,7 @@ URLs include:
 /explore/
 """
 import flask
-from flask import request, redirect
+from flask import request, redirect, url_for
 import insta485
 
 
@@ -15,16 +15,10 @@ def show_explore():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: uncomment for testing
-    """
-    logname = "awdeorio"
-    flask.session['username'] = 'awdeorio'
-    """
-
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
-        return redirect("/accounts/login")
+        return redirect(url_for('login'))
 
     if request.method == "POST":
         # follow user that logname is not following

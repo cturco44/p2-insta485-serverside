@@ -18,22 +18,6 @@ def show_edit():
     # Connect to database
     connection = insta485.model.get_db()
 
-    # TODO: uncomment for testing
-    """
-    logname = "awdeorio"
-    flask.session['username'] = 'awdeorio'
-
-    cur = connection.execute(" #TODO: triple quotes
-        SELECT filename, fullname, email FROM users
-        WHERE username = ?
-    , [logname]
-    )
-    user_obj = cur.fetchall()
-    logname_filename = user_obj[0]['filename']
-    logname_fullname = user_obj[0]['fullname']
-    logname_email = user_obj[0]['email']
-    """
-
     if "username" in flask.session:
         logname = flask.session["username"]
 
@@ -47,7 +31,7 @@ def show_edit():
         logname_fullname = user_obj[0]['fullname']
         logname_email = user_obj[0]['email']
     else:
-        return redirect("/accounts/login")  # TODO: use url_for
+        return redirect(url_for('login'))
 
     if request.method == "POST":
         if 'update' in request.form:

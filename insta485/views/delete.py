@@ -10,7 +10,7 @@ from insta485.config import UPLOAD_FOLDER
 def delete_account():
     """Delete page."""
     if "username" not in flask.session:
-        return redirect(url_for("create_account"))
+        return redirect(url_for("login"))
     user = flask.session["username"]
     if request.method == "POST":
         if "delete" in request.form:

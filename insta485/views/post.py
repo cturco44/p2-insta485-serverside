@@ -17,18 +17,12 @@ def show_post(postid):
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
-        return redirect("/accounts/login/")
+        return redirect(url_for('login'))
 
     check_post_exists(postid)
 
     # Connect to database
     connection = insta485.model.get_db()
-
-    # TODO: uncomment for testing
-    """
-    logname = "awdeorio"
-    flask.session['username'] = 'awdeorio'
-    """
 
     if request.method == "POST":
         if 'uncomment' in request.form:
@@ -53,7 +47,7 @@ def show_post(postid):
                 check_post_exists(deleted_postid)
                 delete_post(deleted_postid)
 
-                return redirect("/u/" + logname + "/")  # TODO: url_for
+                return redirect(url_for('user', user_url_slug=logname))
 
             abort(403)
 
