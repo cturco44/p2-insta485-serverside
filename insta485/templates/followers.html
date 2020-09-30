@@ -20,7 +20,7 @@
     </div>
     {% for follower in all_followers%}
     <div class="follower-user-div">
-      {%set follower_img_url = '/uploads/' + follower[0] + '/'%}
+      {%set follower_img_url = '/uploads/' + follower[0]%}
       <img class = "follower-user-img" src="{{follower_img_url}}" alt="profile picture">
 
       <div class="follower-user-name">

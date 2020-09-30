@@ -13,15 +13,12 @@ def show_following(user_url_slug):
     # Connect to database
     connection = insta485.model.get_db()
 
-    user = "michjc"
-    flask.session['username'] = user
 
-    """
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
-        return redirect("/accounts/login")
-    """
+        return redirect("/accounts/login/")
+
 
     # IF Post
     if request.method == "POST":
@@ -92,7 +89,7 @@ def get_profile_image(user):
     connection = insta485.model.get_db()
     cur = connection.execute("""
         SELECT filename FROM users
-        WHERE username = ? 
+        WHERE username = ?
     """, [user]
     )
     img = cur.fetchall()

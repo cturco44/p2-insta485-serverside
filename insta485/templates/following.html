@@ -19,9 +19,9 @@
         </div>
         {% for item in list %}
         <div class="follower-user-div">
-            {% set owner_img_url =  '/uploads/' + item[2] + "/" %}
+            {% set owner_img_url =  '/uploads/' + item[2]%}
             <img class = "follower-user-img" src="{{owner_img_url}}" alt="profile picture">
-            
+
             <div class="follower-user-name">
                 {% set profile_pic_link = "/u/" + item[0] + "/" %}
                 <a href = "{{profile_pic_link}}">{{item[0]}}</a>
@@ -43,11 +43,11 @@
                 {% endif %}
             </div>
 
-        
-            
-            
 
-        
+
+
+
+
         </div>
         {%- endfor %}
 

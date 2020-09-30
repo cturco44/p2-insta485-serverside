@@ -22,7 +22,7 @@ def show_index():
     if "username" in flask.session:
         logname = flask.session["username"]
     else:
-        return redirect("/accounts/login")
+        return redirect("/accounts/login/")
 
 
     if request.method == "POST":
