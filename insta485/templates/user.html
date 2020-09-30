@@ -5,6 +5,14 @@
     <title>insta485</title>
   </head>
   <body>
+    <div class="topnav">
+        <a href="/">Insta485</a>
+        <div class="topnav-right">
+            <a href="/explore/">Explore</a>
+            {% set profile_link = "/u/" + logname + "/" %}
+            <a href="{{profile_link}}">My Profile</a>
+        </div>
+    </div>
     <h1>{{username}}</h1>
     {%if edit%}
     <a href='/accounts/edit/'>Edit profile</a>
@@ -53,7 +61,7 @@
 
     {% for post in posts %}
       <a href="/p/{{post['post_id']}}/">
-        <img src="{{img_folder}}/{{post['filename']}}"  style="width:100px;height:100px;border:0;">
+        <img src="/uploads/{{post['filename']}}/"  style="width:100px;height:100px;border:0;">
       </a>
     {% endfor %}
 

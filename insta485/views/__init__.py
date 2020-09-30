@@ -1,5 +1,5 @@
 """Views, one for each Insta485 page."""
-from insta485.views.following import show_following
+from insta485.views.following import show_following, check_user_url_slug_exists
 from insta485.views.delete import delete_account
 from insta485.views.create import create_account, upload_file
 from insta485.views.index import show_index
