@@ -5,6 +5,7 @@ URLs include:
 /u/<user_url_slug>/followers/
 """
 import flask
+from flask import request
 import insta485
 from insta485.views.user import execute_query
 from insta485.views.following import check_user_url_slug_exists, get_profile_image, follow, unfollow, check_login_following

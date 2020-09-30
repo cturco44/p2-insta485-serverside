@@ -3,13 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>insta485</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
     <a href="/">Insta485</a>
-    <a href="{{url_for('show_explore')}}">Explore</a>
-    {% set profile_link = "/u/" + logname + "/" %}
-    <a href="{{profile_link}}">My Profile</a>
-      <!-- DO NOT CHANGE THIS (aside from styling) -->
+    <!-- DO NOT CHANGE THIS (aside from styling) -->
     {% set current_url = "/accounts/login/" %}
     <form action="{{current_url}}" method="post" enctype="multipart/form-data">
       <input type="text" name="username"/>

@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>insta485</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="topnav">
@@ -60,7 +62,7 @@
     {{fullname}}
 
     {% for post in posts %}
-      <a href="/p/{{post['post_id']}}/">
+      <a href="/p/{{post['postid']}}/">
         <img src="/uploads/{{post['filename']}}/"  style="width:100px;height:100px;border:0;">
       </a>
     {% endfor %}
