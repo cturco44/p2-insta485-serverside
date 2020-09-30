@@ -20,7 +20,7 @@ def show_post(postid):
         return redirect("/accounts/login/")
 
     check_post_exists(postid)
-    
+
     # Connect to database
     connection = insta485.model.get_db()
 
@@ -29,7 +29,6 @@ def show_post(postid):
     logname = "awdeorio"
     flask.session['username'] = 'awdeorio'
     """
-
 
     if request.method == "POST":
         if 'uncomment' in request.form:

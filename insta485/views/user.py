@@ -9,7 +9,10 @@ import flask
 import insta485
 from flask import request, render_template, url_for
 from insta485.views.create import upload_file
-from insta485.views.following import check_user_url_slug_exists, check_login_following, unfollow, follow
+from insta485.views.following import check_user_url_slug_exists, \
+    check_login_following, unfollow, follow
+
+
 @insta485.app.route('/u/<user_url_slug>/', methods=['POST', 'GET'])
 def user(user_url_slug):
     if 'username' in flask.session:
@@ -31,9 +34,9 @@ def user(user_url_slug):
             unfollow(flask.session['username'], user_url_slug)
         elif 'follow' in request.form:
             follow(flask.session['username'], user_url_slug)
-    if user_url_slug == flask.session.get('username'):#user's own page
+    if user_url_slug == flask.session.get('username'):  # user's own page
         edit = True
-    else:#other's page
+    else:  # other's page
         if check_login_following(flask.session['username'], user_url_slug):
             following = 1
         else:
@@ -44,10 +47,19 @@ def user(user_url_slug):
     fullname = get_fullname(user_url_slug)
     posts = get_posts(user_url_slug)
 
-    return render_template('user.html', edit=edit, following=following,
-    total_posts=total_posts, total_followers=total_followers,
-    total_following=total_following,
-    fullname=fullname, posts=posts, logname=logname,user_url_slug=user_url_slug)
+    return render_template(
+        'user.html',
+        edit=edit,
+        following=following,
+        total_posts=total_posts,
+        total_followers=total_followers,
+        total_following=total_following,
+        fullname=fullname,
+        posts=posts,
+        logname=logname,
+        user_url_slug=user_url_slug,
+        )
+
 
 def execute_query(query, parameters=None):
     connection = insta485.model.get_db()
@@ -56,9 +68,11 @@ def execute_query(query, parameters=None):
     else:
         cur = connection.execute(query, parameters)
     return cur
+
+
 def add_post(filename, owner):
     cur = execute_query(
-    """
+        """
     SELECT COUNT(*) FROM posts
     """
     )
@@ -67,14 +81,16 @@ def add_post(filename, owner):
     post_filename = filename
     post_owner = owner
     execute_query(
-    """
+        """
     INSERT INTO posts(postid, filename, owner)
     VALUES(?, ?, ?);
     """, (postid, post_filename, post_owner)
     )
+
+
 def post_count(owner):
     cur = execute_query(
-    """
+        """
     SELECT COUNT(*) FROM posts
     WHERE owner = ?
     """, (owner,)
@@ -82,9 +98,10 @@ def post_count(owner):
     post_count = int(cur.fetchall()[0]['COUNT(*)'])
     return post_count
 
+
 def follower_count(owner):
     cur = execute_query(
-    """
+        """
     SELECT COUNT(*)FROM following
     WHERE username2 = ?
     """, (owner,)
@@ -93,9 +110,10 @@ def follower_count(owner):
     followers = cur.fetchall()[0]['COUNT(*)']
     return followers
 
+
 def following_count(owner):
     cur = execute_query(
-    """
+        """
     SELECT COUNT(*) FROM following
     WHERE username1 = ?
     """, (owner,)
@@ -103,9 +121,10 @@ def following_count(owner):
     following = cur.fetchall()[0]['COUNT(*)']
     return following
 
+
 def get_fullname(owner):
     cur = execute_query(
-    """
+        """
     SELECT fullname FROM users
     WHERE username = ?
     """, (owner,)
@@ -113,9 +132,10 @@ def get_fullname(owner):
     fullname = cur.fetchall()[0]['fullname']
     return fullname
 
+
 def get_posts(owner):
     cur = execute_query(
-    """
+        """
     SELECT postid, filename FROM posts
     WHERE owner = ?
     ORDER BY postid

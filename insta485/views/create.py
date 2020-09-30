@@ -6,6 +6,7 @@ from flask import request, redirect, abort, url_for
 import insta485
 from insta485.views.password import hash_password
 
+
 @insta485.app.route("/accounts/create/", methods=["POST", "GET"])
 def create_account():
     '''create account'''

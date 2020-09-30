@@ -8,7 +8,10 @@ import flask
 import insta485
 from flask import request, url_for, abort
 from insta485.views.user import execute_query
-from insta485.views.following import check_user_url_slug_exists, get_profile_image, follow, unfollow, check_login_following
+from insta485.views.following import check_user_url_slug_exists, \
+    get_profile_image, follow, unfollow, check_login_following
+
+
 @insta485.app.route('/u/<user_url_slug>/followers/', methods=['POST', 'GET'])
 def followers(user_url_slug):
     if 'username' in flask.session:
@@ -25,19 +28,18 @@ def followers(user_url_slug):
     follower_names = get_followers(user_url_slug)
     all_followers = []
     for follower in follower_names:
-        icon_filename =  get_profile_image(follower['username1'])
+        icon_filename = get_profile_image(follower['username1'])
         follower_name = follower['username1']
         login_following = check_login_following(logname, follower_name)
         print((icon_filename, follower_name, login_following))
         all_followers.append((icon_filename, follower_name, login_following))
     return flask.render_template('followers.html', all_followers=all_followers,
-    logname=logname, user_url_slug=user_url_slug)
-
+                                 logname=logname, user_url_slug=user_url_slug)
 
 
 def get_followers(owner):
     cur = execute_query(
-    """
+        """
     SELECT username1 FROM following
     WHERE username2 = ?
     """, (owner,)

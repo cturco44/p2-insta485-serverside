@@ -30,8 +30,8 @@ def show_password():
     )
     user_obj = cur.fetchall()
     logname_password = user_obj[0]['password']
-    """ 
-    
+    """
+
     if "username" in flask.session:
         logname = flask.session["username"]
 
