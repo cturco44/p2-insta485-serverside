@@ -10,9 +10,8 @@
     <div class="topnav">
         <a href="/">Insta485</a>
         <div class="topnav-right">
-            <a href="/explore/">Explore</a>
-            {% set profile_link = "/u/" + logname + "/" %}
-            <a href="{{profile_link}}">{{logname}}</a>
+            <a href="{{url_for('show_explore')}}">Explore</a>
+            <a href="{{url_for('user', user_url_slug=logname)}}">{{logname}}</a>
         </div>
     </div>
     <h1>{{user_url_slug}}</h1>

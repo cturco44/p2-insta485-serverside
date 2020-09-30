@@ -12,8 +12,7 @@
             <a href="/">Insta485</a>
             <div class="topnav-right">
                 <a href="{{url_for('show_explore')}}">Explore</a>
-                {% set profile_link = "/u/" + logname + "/" %}
-                <a href="{{profile_link}}">{{logname}}</a>
+                <a href="{{url_for('user', user_url_slug=logname)}}">{{logname}}</a>
             </div>
         </div>
         <div class="post-page-div">
@@ -25,7 +24,7 @@
             <div class="post-page-right">
                 <div class="post-page-user">
                     {% set alt = post[0].owner + " profile pic" %}
-                    {% set profile_pic_link = "/u/" + post[0].owner + "/" %}
+                    {% set profile_pic_link = url_for('user', user_url_slug=post[0].owner) %}
                     <a href="{{profile_pic_link}}"><img class="profile-pic" src="{{url_for('download_file', filename=owner[0]['filename'])}}" alt="{{alt}}"></a>
                     <a href="{{profile_pic_link}}">{{post[0].owner}}</a>
                     {% set postid_str = post[0].postid|string %}
@@ -37,10 +36,9 @@
                     {% else %}
                     <p>{{likes|length}} likes</p>
                     {% endif %}
-                    {% set current_url = "/p/" + post[0].postid|string + "/" %}
+                    {% set current_url = url_for('show_post', postid=post[0].postid) %}
                     {% for comment in comments %}
-                        {% set commenter_link = "/u/" + comment["owner"] + "/" %}
-                        <p><a href="{{commenter_link}}"><strong>{{comment["owner"]}}</strong></a> {{comment["text"]}}</p>
+                        <p><a href="{{url_for('user', user_url_slug=comment['owner'])}}"><strong>{{comment["owner"]}}</strong></a> {{comment["text"]}}</p>
                         {% if comment["owner"] == logname %}
                         <form action="{{current_url}}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="commentid" value="{{comment['commentid']}}"/>
