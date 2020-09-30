@@ -7,9 +7,6 @@ URLs include:
 
 import flask
 import insta485
-import pathlib
-import uuid
-import insta485
 from flask import request, render_template
 from insta485.views.create import upload_file
 from insta485.views.following import check_user_url_slug_exists, check_login_following, unfollow, follow
