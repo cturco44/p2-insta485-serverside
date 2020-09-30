@@ -3,8 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>insta485</title>
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="topnav">
@@ -24,21 +22,21 @@
     {%endif%}
 
     {%if following == 1%}
-    <p>following</p>
-    {% set profile_link = "/u/" + user_url_slug + "/" %}
-    <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
-      <input type="submit" name="unfollow" value="unfollow"/>
-      <input type="hidden" name="username" value="{{user_url_slug}}"/>
-    </form>
+      <p>following</p>
+      {% set profile_link = "/u/" + user_url_slug + "/" %}
+      <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
+        <input type="submit" name="unfollow" value="unfollow"/>
+        <input type="hidden" name="username" value="{{user_url_slug}}"/>
+      </form>
     {%elif following == 0%}
-    <p>not following</p>
-    {% set profile_link = "/u/" + user_url_slug + "/" %}
-    <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
-      <input type="submit" name="follow" value="follow"/>
-      <input type="hidden" name="username" value="{{user_url_slug}}"/>
-    </form>
+      <p>not following</p>
+      {% set profile_link = "/u/" + user_url_slug + "/" %}
+      <form action="{{profile_link}}" method="post" enctype="multipart/form-data">
+        <input type="submit" name="follow" value="follow"/>
+        <input type="hidden" name="username" value="{{user_url_slug}}"/>
+      </form>
     {%else%}
-    <br>
+      <br>
     {%endif%}
 
     {% if total_posts == 0 %}
